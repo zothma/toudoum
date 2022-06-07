@@ -1,10 +1,12 @@
 <?php
+    error_reporting(E_ERROR | E_PARSE);
+
     // définition des constantes
     $API_KEY = "e93f866871a4e28d2076a2475e885408";
     $API_URL = "http://api.themoviedb.org/3/";
 
-    function charger_donnee_api(string $ressource, array $options = NULL) {
-        # Génère l'URl de la donnée recherchée, puis renvoie le résultat sous
+    function charger_donnee_api(string $ressource, array $options = NULL): array {
+        # Génère l'URL de la donnée recherchée, puis renvoie le résultat sous
         # forme d'array
         global $API_KEY, $API_URL;
 
@@ -19,7 +21,7 @@
         return $resultat_array;
     }
 
-    function film_serie_valide(array $objet) {
+    function film_serie_valide(array $objet): bool {
         # Vérifie si l'objet passé en paramètre est un film ou une série conforme
         $backdrop_valide = array_key_exists('backdrop_path', $objet);
         if ($backdrop_valide) {
@@ -31,10 +33,15 @@
             $poster_valide = !is_null($objet['poster_path']);
         }
 
-        return $backdrop_valide && $poster_valide;
+        $type_correct = true;
+        if (array_key_exists('media_type', $objet)) {
+            $type_correct = $objet["media_type"] === "movie" || $objet["media_type"] === "tv";
+        }
+
+        return $backdrop_valide && $poster_valide && $type_correct;
     }
 
-    function rechercher(string $recherche) {
+    function rechercher(string $recherche): array {
         # Récupère la liste des films et des séries liées à une recherche
         $contenu_brut = charger_donnee_api("search/multi", ["query" => $recherche]);
         $contenu_trie = array_filter($contenu_brut["results"], 'film_serie_valide');
@@ -42,9 +49,27 @@
         return $contenu_trie;
     }
 
-    
+    function detail_film(int $id): array {
+        # Récupère les données détaillées d'un film
+        try {
+            $contenu_brut = charger_donnee_api("movie/$id");
+        } catch (TypeError $err) {
+            # Erreur 404, film non trouvé
+            $contenu_brut = [];
+        }
 
-    // rechercher("Interstellar");
-    // print_r(rechercher("Interstellar"));
+        return $contenu_brut;
+    }
 
+    function detail_serie(int $id): array {
+        # Récupère les données détaillées d'une série
+        try {
+            $contenu_brut = charger_donnee_api("tv/$id");
+        } catch (TypeError $err) {
+            # Erreur 404, série non trouvée
+            $contenu_brut = [];
+        }
+
+        return $contenu_brut;
+    }
 ?>
