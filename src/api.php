@@ -149,7 +149,6 @@
                     return HD_IMAGE_URL . $el["logo_path"];
                 }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
             }
-            $resultat["plateformes"] = $plateformes;
 
             // Gestion de la collection
             $films_collection = [];
@@ -167,6 +166,7 @@
                 "acteurs" => $acteurs,
                 "genres" => $genres,
                 "production" => $production,
+                "plateformes" => $plateformes,
                 "collection" => $films_collection,
                 "recommendations" => $recommendations,
             ];
@@ -182,14 +182,48 @@
     function detail_serie(int $id): array {
         # Récupère les données détaillées d'une série
         try {
-            
-            $donnee = charger_donnee_api("tv/$id");
+            $donnee = charger_donnee_api("tv/$id", ["append_to_response" => "credits,watch/providers,recommendations"]);
+
+            $get_name = function($el) {return $el["name"];};
+            $genres = array_map($get_name, $donnee["genres"]);
+            $acteurs = array_map($get_name, array_slice($donnee["credits"]["cast"], 0, 10));
+            $production = array_map($get_name, $donnee["production_companies"]);
+            $recommendations = array_map('formater_donnee', array_slice($donnee["recommendations"]["results"], 0, 5));
+
+            // Gestion des plateformes de contenu accessibles en France
+            $plateformes = [];
+            if (array_key_exists('FR', $donnee["watch/providers"]["results"])) {
+                $plateformes = array_map(function($el) {
+                    return HD_IMAGE_URL . $el["logo_path"];
+                }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
+            }
+
+            // Gestion des résumés des saisons
+            $saisons = [];
+            foreach($donnee["seasons"] as $s) {
+                $saisons[$s["season_number"]] = $s["overview"];
+            } 
+
+            $resultat = [
+                "nom" => $donnee["name"],
+                "annee_sortie" => substr($donnee["first_air_date"], 0, 4),
+                "resume" => $donnee["overview"],
+                "origine" => $donnee["production_countries"][0]["iso_3166_1"],
+                "fond" => HD_IMAGE_URL . $donnee["backdrop_path"],
+                "acteurs" => $acteurs,
+                "genres" => $genres,
+                "production" => $production,
+                "plateformes" => $plateformes,
+                "saisons" => $saisons,
+                "recommendations" => $recommendations,
+            ];
+
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
-            $donnee = [];
+            $resultat = [];
         }
 
-        return $donnee;
+        return $resultat;
     }
 
-    print_r(detail_film(284052));
+    print_r(detail_serie(60574));
