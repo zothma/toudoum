@@ -2,18 +2,15 @@
     error_reporting(E_ERROR | E_PARSE);
 
     // définition des constantes
-    $API_KEY = "e93f866871a4e28d2076a2475e885408";
-    $API_URL = "http://api.themoviedb.org/3/";
-    $IMAGE_URL = "http://image.tmdb.org/t/p/w500";
-    $HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
+    const API_KEY = "e93f866871a4e28d2076a2475e885408";
+    const API_URL = "http://api.themoviedb.org/3/";
+    const IMAGE_URL = "http://image.tmdb.org/t/p/w500";
+    const HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
 
     function charger_donnee_api(string $ressource, array $options = NULL): array {
         # Génère l'URL de la donnée recherchée, puis renvoie le résultat sous
         # forme d'array
-        global $API_KEY, $API_URL;
-
-        # Génération de l'URL
-        $url = $API_URL . $ressource . "?language=fr&api_key=" . $API_KEY;
+        $url = API_URL . $ressource . "?language=fr&api_key=" . API_KEY;
         $url .= ($options === NULL) ? "" : "&" . http_build_query($options);
 
         # Récupération des données
@@ -73,10 +70,8 @@
     function formater_donnee(array $donnee) {
         // Formate un film ou une série pour ne garder que les informations essentielles
         // dans une affiche poster
-        global $IMAGE_URL;
-
         $id = $donnee["id"];
-        $poster = $IMAGE_URL . $donnee["poster_path"];          // Récupère l'URL complète du poster
+        $poster = IMAGE_URL . $donnee["poster_path"];          // Récupère l'URL complète du poster
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
         if ($donnee["media_type"] === "movie") {
@@ -119,8 +114,6 @@
 
     function rechercher_collection(int $id_collection) {
         // Récupère tous les films d'une collection
-        global $HD_IMAGE_URL;
-
         $donnee = charger_donnee_api("collection/$id_collection");
 
         $resultat = [];
@@ -129,7 +122,7 @@
                 "nom" => $film["title"],
                 "annee_sortie" => substr($film["release_date"], 0, 4),
                 "resume" => $film["overview"],
-                "fond" => $HD_IMAGE_URL . $film["backdrop_path"]
+                "fond" => HD_IMAGE_URL . $film["backdrop_path"]
             ];
 
             $resultat[$film["id"]] = $film_formate;
@@ -139,22 +132,21 @@
     }
 
     function detail_film(int $id): array {
-        global $HD_IMAGE_URL;
-
         # Récupère les données détaillées d'un film
         try {
             $donnee = charger_donnee_api("movie/$id", ["append_to_response" => "credits,watch/providers,recommendations"]);
 
-            $genres = array_map(function($el) {return $el["name"];}, $donnee["genres"]);
-            $acteurs = array_map(function($el) {return $el["name"];}, array_slice($donnee["credits"]["cast"], 0, 10));
+            $get_name = function($el) {return $el["name"];};
+            $genres = array_map($get_name, $donnee["genres"]);
+            $acteurs = array_map($get_name, array_slice($donnee["credits"]["cast"], 0, 10));
+            $production = array_map($get_name, $donnee["production_companies"]);
             $recommendations = array_map('formater_donnee', array_slice($donnee["recommendations"]["results"], 0, 5));
 
             // Gestion des plateformes de contenu accessibles en France
             $plateformes = [];
             if (array_key_exists('FR', $donnee["watch/providers"]["results"])) {
                 $plateformes = array_map(function($el) {
-                    global $HD_IMAGE_URL;
-                    return $HD_IMAGE_URL . $el["logo_path"];
+                    return HD_IMAGE_URL . $el["logo_path"];
                 }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
             }
             $resultat["plateformes"] = $plateformes;
@@ -171,9 +163,10 @@
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
                 "resume" => $donnee["overview"],
                 "origine" => $donnee["production_countries"][0]["iso_3166_1"],
-                "fond" => $HD_IMAGE_URL . $donnee["backdrop_path"],
+                "fond" => HD_IMAGE_URL . $donnee["backdrop_path"],
                 "acteurs" => $acteurs,
                 "genres" => $genres,
+                "production" => $production,
                 "collection" => $films_collection,
                 "recommendations" => $recommendations,
             ];
@@ -189,6 +182,7 @@
     function detail_serie(int $id): array {
         # Récupère les données détaillées d'une série
         try {
+            
             $donnee = charger_donnee_api("tv/$id");
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
