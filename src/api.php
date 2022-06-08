@@ -75,8 +75,6 @@
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
         if ($donnee["media_type"] === "movie") {
-            $id = "f$id";
-            
             $donnee_formate = [
                 "nom" => $donnee["title"],
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
@@ -84,7 +82,6 @@
                 "genre" => $genre
             ];
         } else {
-            $id = "s$id";
             $donnee_formate = [
                 "nom" => $donnee["name"],
                 "annee_sortie" => substr($donnee["first_air_date"], 0, 4),
@@ -105,7 +102,7 @@
         $resultat = [];
         foreach($contenu_filtre as $donnee) {
             $donnee_formate = formater_donnee($donnee);
-            $id = $donnee["id"];
+            $id = ($donnee["media_type"] === "movie" ? 'f' : 's') . $donnee['id'];
             $resultat[$id] = $donnee_formate;
         }
 
@@ -125,7 +122,7 @@
                 "fond" => HD_IMAGE_URL . $film["backdrop_path"]
             ];
 
-            $resultat[$film["id"]] = $film_formate;
+            $resultat['f' . $film["id"]] = $film_formate;
         }
 
         return $resultat;
@@ -138,14 +135,22 @@
         $genres = array_map($get_name, $donnee["genres"]);
         $acteurs = array_map($get_name, array_slice($donnee["credits"]["cast"], 0, 10));
         $production = array_map($get_name, $donnee["production_companies"]);
-        $recommendations = array_map('formater_donnee', array_slice($donnee["recommendations"]["results"], 0, 5));
 
         // Gestion des plateformes de contenu accessibles en France
         $plateformes = [];
         if (array_key_exists('FR', $donnee["watch/providers"]["results"])) {
-            $plateformes = array_map(function($el) {
-                return HD_IMAGE_URL . $el["logo_path"];
-            }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
+            if (array_key_exists('flatrate', $donnee["watch/providers"]["results"]["FR"])) {
+                $plateformes = array_map(function($el) {
+                    return HD_IMAGE_URL . $el["logo_path"];
+                }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
+            }
+        }
+
+        $recommendations = [];
+        foreach (array_slice($donnee["recommendations"]["results"], 0, 5) as $film) {
+            $film_formate = formater_donnee($film);
+            $id = ($film["media_type"] === "movie" ? 'f' : 's') . $film["id"];
+            $recommendations[$id] = $film_formate;
         }
 
         return [
@@ -170,7 +175,7 @@
             $films_collection = [];
             if (array_key_exists('belongs_to_collection', $donnee)) {
                 $films_collection = rechercher_collection($donnee["belongs_to_collection"]["id"]);
-                unset($films_collection[$id]);  // On retire le film actuel de la collection
+                unset($films_collection['f' . $id]);  // On retire le film actuel de la collection
             }
 
             $resultat["nom"] = $donnee["title"];
@@ -180,6 +185,7 @@
         catch (TypeError $err) {
             # Erreur 404, film non trouvé
             $resultat = [];
+            echo $err;
         }
 
         return $resultat;
@@ -207,4 +213,6 @@
 
         return $resultat;
     }
+
+    print_r(detail_film(157336));
 ?>
