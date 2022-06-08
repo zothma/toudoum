@@ -1,0 +1,50 @@
+.carte_film
+{
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    text-align: center;
+    font-family: Hind;
+    padding: 20px;
+    width: min-content;
+    
+}
+
+.carte_film h3
+{
+    font-size: 30px;
+}
+
+.carte_film--bar-container
+{
+    position: relative;
+    margin: 0 10px;
+}
+
+.carte_film--bar
+{
+    height: 3px;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+}
+
+.carte_film--bar__vert
+{
+    background-color: #45cf42;
+}
+
+.carte_film--bar__rouge
+{
+    background-color: #D90429;
+}
+
+.carte_film--likes
+{
+    display: flex;
+    justify-content: space-between;
+    color: rgb(140, 140, 140);
+    padding: 0 10px;   
+}
+
+
+
