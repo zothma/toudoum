@@ -41,7 +41,41 @@
         return $T;
 
     }
-    print_r(avis_commentaire('f744'));
+    
+    function recuperer_liste_vu($id) {
+        global $link;
+        $sql = "SELECT id_api FROM Avis WHERE id_util = '$id';";
+
+        if (!($result = mysqli_query($link, $sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $T = [];
+
+        while( $row = mysqli_fetch_row( $result )) {
+            array_push($T, $row[0]);
+        }
+        return $T;
+    }
+
+    function recuperer_liste_a_voir($id) {
+        global $link;
+        $sql = "SELECT id_api FROM Film_à_voir WHERE id_util = '$id';";
+
+        if (!($result = mysqli_query($link, $sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $T = [];
+
+        while( $row = mysqli_fetch_row( $result )) {
+            array_push($T, $row[0]);
+        }
+        return $T;
+
+    }
 
 ?>
 
