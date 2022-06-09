@@ -59,6 +59,15 @@ if ($donnee_est_film) {
                 <?php endforeach ?>
             </div>
         </div>
+
+        <p><?php echo $donnee["resume"] ?></p>
+        <?php if (!$donnee_est_film): ?>
+            <p>
+                Créateur : <?php echo implode(', ', $donnee["createur"]) ?>
+            </p>
+        <?php endif ?>
+        <p>Production : <?php echo implode(', ', $donnee["production"]) ?></p>
+        <p>Distribution : <?php echo implode(', ', $donnee["acteurs"]) ?></p>
     </main>
 </body>
 

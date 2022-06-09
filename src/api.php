@@ -203,6 +203,7 @@
             $resultat["saisons"] = $saisons;
             $resultat["nb_saisons"] = $donnee["number_of_seasons"];
             $resultat["nb_episodes"] = $donnee["number_of_episodes"];
+            $resultat["createur"] = array_map(fn ($el) => $el["name"], $donnee["created_by"]);
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
             $resultat = [];
