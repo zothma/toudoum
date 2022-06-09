@@ -130,7 +130,7 @@
 
     function detail_general(array $donnee): array {
         // Retourne les données générales rendues par les films et les séries
-        $get_name = function($el) {return $el["name"];};
+        $get_name = fn ($el) => $el["name"];
 
         $genres = array_map($get_name, $donnee["genres"]);
         $acteurs = array_map($get_name, array_slice($donnee["credits"]["cast"], 0, 10));
@@ -216,7 +216,7 @@
 
     function nouveautes_films(): array {
         $donnee = charger_donnee_api("movie/popular");
-        $resultat = array_map(function ($el) { return formater_donnee($el, true); }, $donnee["results"]);
+        $resultat = array_map(fn ($el) => formater_donnee($el, true), $donnee["results"]);
 
         return $resultat;
     }
