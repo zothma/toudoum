@@ -105,6 +105,11 @@ if ($donnee_est_film) {
                 </div>
             <?php endforeach ?>
         <?php endif ?>
+
+        <h2>Dans le même genre</h2>
+        <div class="recommendations">
+            <?php array_map(fn ($el) => generer_carte($el, 80), $donnee["recommendations"]) ?>
+        </div>
     </main>
 </body>
 

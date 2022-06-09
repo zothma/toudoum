@@ -133,6 +133,7 @@ main {
 
 h2 {
     font-size: 40px;
+    margin: 60px 0 5px 0;
 }
 
 .carte-saison, .carte-collection {
@@ -179,4 +180,11 @@ h2 {
 .carte-collection--icone {
     height: 50px;
     width: 50px;
+}
+
+.recommendations {
+    display: flex;
+    gap: 60px;
+    overflow: scroll;
+    padding: 10px 0;
 }
