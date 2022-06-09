@@ -59,7 +59,7 @@ body {
     box-sizing: border-box;
     background-position: top;
     background-size: cover;
-    padding: 50px;
+    padding: 20px 50px;
     color: white;
     font-family: 'Hind';
 }
@@ -95,7 +95,12 @@ body {
 
 .en-tete-image--infos {
     display: flex;
+    justify-content: space-between;
     font-weight: bold;
     font-size: 24px;
+}
+
+.en-tete-image--infos div {
+    display: flex;
     gap: 30px;
 }

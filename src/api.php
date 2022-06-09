@@ -168,7 +168,7 @@
 
             // Gestion de la collection
             $films_collection = [];
-            if (array_key_exists('belongs_to_collection', $donnee)) {
+            if (array_key_exists('belongs_to_collection', $donnee) && !is_null($donnee["belongs_to_collection"])) {
                 $films_collection = rechercher_collection($donnee["belongs_to_collection"]["id"]);
                 unset($films_collection[$id]);  // On retire le film actuel de la collection
             }
@@ -180,6 +180,7 @@
         catch (TypeError $err) {
             # Erreur 404, film non trouvé
             $resultat = [];
+            echo $err;
         }
 
         return $resultat;
@@ -200,6 +201,8 @@
             $resultat["nom"] = $donnee["name"];
             $resultat["annee_sortie"] = substr($donnee["first_air_date"], 0, 4);
             $resultat["saisons"] = $saisons;
+            $resultat["nb_saisons"] = $donnee["number_of_seasons"];
+            $resultat["nb_episodes"] = $donnee["number_of_episodes"];
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
             $resultat = [];
