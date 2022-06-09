@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
 .carte_film
 {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -47,5 +52,50 @@
     padding: 0 10px;   
 }
 
+.en-tete-image {
+    position: relative;
+    height: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    background-position: top;
+    background-size: cover;
+    padding: 50px;
+    color: white;
+    font-family: 'Hind';
+}
 
+.en-tete-image--degrade {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.15) 100%);
+}
 
+.en-tete-image--contenu {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}
+
+.en-tete-image--navbar {
+    font-size: 32px;
+}
+
+.en-tete-image--titre {
+    font-size: 46px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.en-tete-image--infos {
+    display: flex;
+    font-weight: bold;
+    font-size: 24px;
+    gap: 30px;
+}

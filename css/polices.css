@@ -2,6 +2,13 @@
 {
     font-family: Hind;
     src: url(../Polices/Hind-Regular.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Hind;
+    src: url(../Polices/Hind-Bold.ttf);
+    font-weight: bold;
 }
 
 
