@@ -68,6 +68,18 @@ if ($donnee_est_film) {
         <?php endif ?>
         <p>Production : <?php echo implode(', ', $donnee["production"]) ?></p>
         <p>Distribution : <?php echo implode(', ', $donnee["acteurs"]) ?></p>
+
+        <?php if (!$donnee_est_film): ?>
+            <h2>Saisons</h2>
+            <?php foreach($donnee["saisons"] as $num_saison => $resume_saison): ?>
+                <div class="carte-saison">
+                    <h3 class="carte-saison--titre">Saison <?php echo $num_saison ?></h3>
+                    <p class="carte-saison--resume <?php if (strlen($resume_saison) == 0) echo "carte-saison--resume__indisponible" ?>">
+                        <?php echo strlen($resume_saison) > 0 ? $resume_saison : "Résumé indisponible" ?>
+                    </p>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
     </main>
 </body>
 

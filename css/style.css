@@ -130,3 +130,24 @@ main {
     border-radius: 10px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
 }
+
+h2 {
+    font-size: 40px;
+}
+
+.carte-saison {
+    padding: 30px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.carte-saison--titre {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+} 
+
+.carte-saison--resume__indisponible {
+    color: #8C8C8C;
+    font-style: italic;
+}
