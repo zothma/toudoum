@@ -67,16 +67,14 @@
         return $backdrop_valide && $poster_valide && $type_correct;
     }
 
-    function formater_donnee(array $donnee) {
+    function formater_donnee(array $donnee, bool $est_film = null) {
         // Formate un film ou une série pour ne garder que les informations essentielles
         // dans une affiche poster
         $id = $donnee["id"];
         $poster = IMAGE_URL . $donnee["poster_path"];          // Récupère l'URL complète du poster
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
-        if ($donnee["media_type"] === "movie") {
-            $id = "f$id";
-            
+        if ($est_film ?? $donnee["media_type"] === "movie") {
             $donnee_formate = [
                 "nom" => $donnee["title"],
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
@@ -84,7 +82,6 @@
                 "genre" => $genre
             ];
         } else {
-            $id = "s$id";
             $donnee_formate = [
                 "nom" => $donnee["name"],
                 "annee_sortie" => substr($donnee["first_air_date"], 0, 4),
@@ -105,7 +102,7 @@
         $resultat = [];
         foreach($contenu_filtre as $donnee) {
             $donnee_formate = formater_donnee($donnee);
-            $id = $donnee["id"];
+            $id = ($donnee["media_type"] === "movie" ? 'f' : 's') . $donnee['id'];
             $resultat[$id] = $donnee_formate;
         }
 
@@ -125,7 +122,7 @@
                 "fond" => HD_IMAGE_URL . $film["backdrop_path"]
             ];
 
-            $resultat[$film["id"]] = $film_formate;
+            $resultat['f' . $film["id"]] = $film_formate;
         }
 
         return $resultat;
@@ -133,19 +130,27 @@
 
     function detail_general(array $donnee): array {
         // Retourne les données générales rendues par les films et les séries
-        $get_name = function($el) {return $el["name"];};
+        $get_name = fn ($el) => $el["name"];
 
         $genres = array_map($get_name, $donnee["genres"]);
         $acteurs = array_map($get_name, array_slice($donnee["credits"]["cast"], 0, 10));
         $production = array_map($get_name, $donnee["production_companies"]);
-        $recommendations = array_map('formater_donnee', array_slice($donnee["recommendations"]["results"], 0, 5));
 
         // Gestion des plateformes de contenu accessibles en France
         $plateformes = [];
         if (array_key_exists('FR', $donnee["watch/providers"]["results"])) {
-            $plateformes = array_map(function($el) {
-                return HD_IMAGE_URL . $el["logo_path"];
-            }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
+            if (array_key_exists('flatrate', $donnee["watch/providers"]["results"]["FR"])) {
+                $plateformes = array_map(function($el) {
+                    return HD_IMAGE_URL . $el["logo_path"];
+                }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
+            }
+        }
+
+        $recommendations = [];
+        foreach (array_slice($donnee["recommendations"]["results"], 0, 5) as $film) {
+            $film_formate = formater_donnee($film);
+            $id = ($film["media_type"] === "movie" ? 'f' : 's') . $film["id"];
+            $recommendations[$id] = $film_formate;
         }
 
         return [
@@ -170,7 +175,7 @@
             $films_collection = [];
             if (array_key_exists('belongs_to_collection', $donnee)) {
                 $films_collection = rechercher_collection($donnee["belongs_to_collection"]["id"]);
-                unset($films_collection[$id]);  // On retire le film actuel de la collection
+                unset($films_collection['f' . $id]);  // On retire le film actuel de la collection
             }
 
             $resultat["nom"] = $donnee["title"];
@@ -180,6 +185,7 @@
         catch (TypeError $err) {
             # Erreur 404, film non trouvé
             $resultat = [];
+            echo $err;
         }
 
         return $resultat;
@@ -207,4 +213,20 @@
 
         return $resultat;
     }
+
+    function nouveautes_films(): array {
+        $donnee = charger_donnee_api("movie/popular");
+        $resultat = array_map(fn ($el) => formater_donnee($el, true), $donnee["results"]);
+
+        return $resultat;
+    }
+
+    function nouveautes_series(): array {
+        $donnee = charger_donnee_api("tv/popular");
+        $resultat = array_map('formater_donnee', $donnee["results"]);
+
+        return $resultat;
+    }
+
+    print_r(nouveautes_series());
 ?>
