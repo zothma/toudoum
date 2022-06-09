@@ -135,7 +135,7 @@ h2 {
     font-size: 40px;
 }
 
-.carte-saison {
+.carte-saison, .carte-collection {
     padding: 30px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
     border-radius: 10px;
@@ -147,7 +147,36 @@ h2 {
     font-size: 20px;
 } 
 
+
 .carte-saison--resume__indisponible {
     color: #8C8C8C;
     font-style: italic;
+}
+
+.carte-collection {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    color: white;
+}
+
+.carte-collection--fond, .carte-collection--titre {
+    position: relative;
+}
+
+.carte-collection--titre {
+    margin: 0 0 10px 0;
+    font-size: 30px;
+}
+
+.carte-collection--resume {
+    margin: 0;
+}
+
+.carte-collection--icone {
+    height: 50px;
+    width: 50px;
 }

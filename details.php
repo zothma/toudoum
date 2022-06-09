@@ -4,6 +4,18 @@ include('src/carte_film.php');
 
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 
+function ellipser_texte(string $texte) {
+    $texte_complet = explode(' ', $texte);
+    $texte_ellipse = array_slice($texte_complet, 0, 40);
+    $resultat = implode(' ', $texte_ellipse);
+
+    if (count($texte_complet) > count($texte_ellipse)) {
+        $resultat .= '...';
+    }
+
+    return $resultat;
+}
+
 if ($donnee_est_film) {
     $donnee = detail_film((int)substr($_GET['id'], 1));
 } else {
@@ -77,6 +89,19 @@ if ($donnee_est_film) {
                     <p class="carte-saison--resume <?php if (strlen($resume_saison) == 0) echo "carte-saison--resume__indisponible" ?>">
                         <?php echo strlen($resume_saison) > 0 ? $resume_saison : "Résumé indisponible" ?>
                     </p>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
+
+        <?php if ($donnee_est_film && count($donnee["collection"]) > 0): ?>
+            <h2>Dans la même collection</h2>
+            <?php foreach($donnee["collection"] as $id_film => $film_collection): ?>
+                <div class="carte-collection" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo $film_collection["fond"] ?>')">
+                    <div class="carte-collection--contenu">
+                        <h3 class="carte-collection--titre"><?php echo $film_collection["nom"] . ' - ' . $film_collection["annee_sortie"] ?></h3>
+                        <p class="carte-collection--resume"><?php echo ellipser_texte($film_collection["resume"]) ?></p>
+                    </div>
+                    <img src="pictures/right_arrow_white.svg" alt="Accéder à la page" class="carte-collection--icone">
                 </div>
             <?php endforeach ?>
         <?php endif ?>
