@@ -4,7 +4,7 @@
     // définition des constantes
     const API_KEY = "e93f866871a4e28d2076a2475e885408";
     const API_URL = "http://api.themoviedb.org/3/";
-    const IMAGE_URL = "http://image.tmdb.org/t/p/w500";
+    const IMAGE_URL = "http://image.tmdb.org/t/p/w300";
     const HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
 
     function charger_donnee_api(string $ressource, array $options = NULL): array {
@@ -67,14 +67,14 @@
         return $backdrop_valide && $poster_valide && $type_correct;
     }
 
-    function formater_donnee(array $donnee) {
+    function formater_donnee(array $donnee, bool $est_film = null) {
         // Formate un film ou une série pour ne garder que les informations essentielles
         // dans une affiche poster
         $id = $donnee["id"];
         $poster = IMAGE_URL . $donnee["poster_path"];          // Récupère l'URL complète du poster
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
-        if ($donnee["media_type"] === "movie") {
+        if ($est_film ?? $donnee["media_type"] === "movie") {
             $donnee_formate = [
                 "nom" => $donnee["title"],
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
@@ -214,5 +214,19 @@
         return $resultat;
     }
 
-    print_r(detail_film(157336));
+    function nouveautes_films(): array {
+        $donnee = charger_donnee_api("movie/popular");
+        $resultat = array_map(function ($el) { return formater_donnee($el, true); }, $donnee["results"]);
+
+        return $resultat;
+    }
+
+    function nouveautes_series(): array {
+        $donnee = charger_donnee_api("tv/popular");
+        $resultat = array_map('formater_donnee', $donnee["results"]);
+
+        return $resultat;
+    }
+
+    print_r(nouveautes_series());
 ?>
