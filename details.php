@@ -4,7 +4,8 @@ include('src/carte_film.php');
 
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 
-function ellipser_texte(string $texte) {
+function ellipser_texte(string $texte)
+{
     $texte_complet = explode(' ', $texte);
     $texte_ellipse = array_slice($texte_complet, 0, 40);
     $resultat = implode(' ', $texte_ellipse);
@@ -62,18 +63,20 @@ if ($donnee_est_film) {
                 <img src="pictures/empty_like.svg" alt="J'aime" />
                 <img src="pictures/empty_dislike.svg" alt="Je n'aime pas" />
                 <img src="pictures/empty_watch_later.svg" alt="Regarder plus tard" />
-                <img src="pictures/empty_comment.svg" alt="Commenter" />
+                <a href="#commentaires">
+                    <img src="pictures/empty_comment.svg" alt="Commenter" />
+                </a>
             </div>
             <div class="icones_contenu--fournisseurs">
                 <!-- Images des fournisseurs VOD fournis -->
-                <?php foreach($donnee["plateformes"] as $plateforme): ?>
+                <?php foreach ($donnee["plateformes"] as $plateforme) : ?>
                     <img src="<?php echo $plateforme ?>" alt="Fournisseur VOD" />
                 <?php endforeach ?>
             </div>
         </div>
 
         <p><?php echo $donnee["resume"] ?></p>
-        <?php if (!$donnee_est_film): ?>
+        <?php if (!$donnee_est_film) : ?>
             <p>
                 Créateur : <?php echo implode(', ', $donnee["createur"]) ?>
             </p>
@@ -81,9 +84,9 @@ if ($donnee_est_film) {
         <p>Production : <?php echo implode(', ', $donnee["production"]) ?></p>
         <p>Distribution : <?php echo implode(', ', $donnee["acteurs"]) ?></p>
 
-        <?php if (!$donnee_est_film): ?>
+        <?php if (!$donnee_est_film) : ?>
             <h2>Saisons</h2>
-            <?php foreach($donnee["saisons"] as $num_saison => $resume_saison): ?>
+            <?php foreach ($donnee["saisons"] as $num_saison => $resume_saison) : ?>
                 <div class="carte-saison">
                     <h3 class="carte-saison--titre">Saison <?php echo $num_saison ?></h3>
                     <p class="carte-saison--resume <?php if (strlen($resume_saison) == 0) echo "carte-saison--resume__indisponible" ?>">
@@ -93,9 +96,9 @@ if ($donnee_est_film) {
             <?php endforeach ?>
         <?php endif ?>
 
-        <?php if ($donnee_est_film && count($donnee["collection"]) > 0): ?>
+        <?php if ($donnee_est_film && count($donnee["collection"]) > 0) : ?>
             <h2>Dans la même collection</h2>
-            <?php foreach($donnee["collection"] as $id_film => $film_collection): ?>
+            <?php foreach ($donnee["collection"] as $id_film => $film_collection) : ?>
                 <div class="carte-collection" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo $film_collection["fond"] ?>')">
                     <div class="carte-collection--contenu">
                         <h3 class="carte-collection--titre"><?php echo $film_collection["nom"] . ' - ' . $film_collection["annee_sortie"] ?></h3>
@@ -110,6 +113,28 @@ if ($donnee_est_film) {
         <div class="recommendations">
             <?php array_map(fn ($el) => generer_carte($el, 80), $donnee["recommendations"]) ?>
         </div>
+
+        <h2 id="commentaires">Commentaires (0)</h2>
+        <form class="zone-edition-commentaire" action="details.php" method="get">
+            <!-- Le champs caché permettra de remettre l'id dans l'URL -->
+            <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>">
+            <textarea required class="commentaire commentaire__edition" name="commentaire" id="commentaire_personnel" placeholder="Laisser un commentaire..." cols="100" rows="2"></textarea>
+            <div class="commentaire--boutons">
+                <input type="radio" name="aimer" id="commentaire_like" value="1" hidden required />
+                <label for="commentaire_like">
+                    <img class="commentaire--bouton-image commentaire--bouton-image__desactive" src="pictures/empty_like.svg" alt="J'aime" />
+                    <img class="commentaire--bouton-image commentaire--bouton-image__active" src="pictures/green_like.svg" alt="J'aime" />
+                </label>
+
+                <input type="radio" name="aimer" id="commentaire_dislike" value="0" hidden />
+                <label for="commentaire_dislike">
+                    <img class="commentaire--bouton-image commentaire--bouton-image__desactive" src="pictures/empty_dislike.svg" alt="J'aime" />
+                    <img class="commentaire--bouton-image commentaire--bouton-image__active" src="pictures/red_dislike.svg" alt="J'aime" />
+                </label>
+
+                <button class="commentaire--bouton-envoyer" type="submit">Envoyer</button>
+            </div>
+        </form>
     </main>
 </body>
 

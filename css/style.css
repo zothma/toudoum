@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -107,7 +111,9 @@ body {
 }
 
 main {
-    margin: 40px 100px;
+    padding: 40px 100px;
+    margin: auto;
+    max-width: 1440px;
 }
 
 .icones_contenu {
@@ -185,6 +191,57 @@ h2 {
 .recommendations {
     display: flex;
     gap: 60px;
-    overflow: scroll;
-    padding: 10px 0;
+    overflow-y: scroll;
+    padding: 10px 10px;
+}
+
+.commentaire {
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+.commentaire__edition {
+    resize: none;
+    border: 1px solid #999999;
+    font-family: Hind;
+    margin-bottom: 30px;
+}
+
+.commentaire--boutons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.commentaire--bouton-image {
+    height: 40px;
+}
+
+.commentaire--bouton-envoyer {
+    border: none;
+    color: white;
+    background-color: #D90429;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    padding: 0 15px;
+    font-weight: 600;
+    height: 40px;
+}
+
+.zone-edition-commentaire {
+    margin-top: 20px;
+}
+
+.zone-edition-commentaire input[type=radio] + label .commentaire--bouton-image__active {
+    display: none;
+}
+
+.zone-edition-commentaire input[type=radio]:checked + label .commentaire--bouton-image__active {
+    display: inline;
+}
+
+.zone-edition-commentaire input[type=radio]:checked + label .commentaire--bouton-image__desactive {
+    display: none;
 }
