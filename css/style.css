@@ -257,12 +257,13 @@ h2 {
     display: none;
 }
 
-.menu-connexion--titre {
+.menu-connexion-inscription--titre {
     text-align: center;
     margin-top: 30px;
     margin-bottom: 50px;
 }
-.menu-connexion--formulaire {
+
+.menu-connexion-inscription--formulaire {
     display: flex;
     flex-direction: column;
     width: 550px;
@@ -273,15 +274,15 @@ h2 {
     border-radius: 10px;
 }
 
-.menu-connexion--formulaire label, input {
+.menu-connexion-inscription--formulaire label, input {
     font-size: 20px;
 }
 
-.menu-connexion--formulaire label {
+.menu-connexion-inscription--formulaire label {
     margin-bottom: 3px;
 }
 
-.menu-connexion--formulaire input {
+.menu-connexion-inscription--formulaire input {
     padding: 10px 25px;
     border: none;
     /* border-radius: 10px; */
@@ -289,7 +290,7 @@ h2 {
     margin-bottom: 25px;
 }
 
-.menu-connexion--formulaire button {
+.menu-connexion-inscription--formulaire button {
     height: 50px;
     margin-top: 30px;
     border: none;
@@ -302,6 +303,13 @@ h2 {
     font-weight: 600;
 }
 
-.menu-connexion--redirection {
+.menu-connexion-inscription--formulaire h3 {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.menu-connexion-inscription--redirection {
     text-align: center;
 }
