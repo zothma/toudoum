@@ -5,7 +5,8 @@
     const API_KEY = "e93f866871a4e28d2076a2475e885408";
     const API_URL = "http://api.themoviedb.org/3/";
     const IMAGE_URL = "http://image.tmdb.org/t/p/w300";
-    const HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
+    const HD_IMAGE_URL = "http://image.tmdb.org/t/p/w1280";
+    const FULL_HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
 
     function charger_donnee_api(string $ressource, array $options = NULL): array {
         # Génère l'URL de la donnée recherchée, puis renvoie le résultat sous
@@ -141,7 +142,7 @@
         if (array_key_exists('FR', $donnee["watch/providers"]["results"])) {
             if (array_key_exists('flatrate', $donnee["watch/providers"]["results"]["FR"])) {
                 $plateformes = array_map(function($el) {
-                    return HD_IMAGE_URL . $el["logo_path"];
+                    return FULL_HD_IMAGE_URL . $el["logo_path"];
                 }, $donnee["watch/providers"]["results"]["FR"]["flatrate"]);
             }
         }
@@ -156,7 +157,7 @@
         return [
             "resume" => $donnee["overview"],
             "origine" => $donnee["production_countries"][0]["iso_3166_1"],
-            "fond" => HD_IMAGE_URL . $donnee["backdrop_path"],
+            "fond" => FULL_HD_IMAGE_URL . $donnee["backdrop_path"],
             "acteurs" => $acteurs,
             "genres" => $genres,
             "production" => $production,
@@ -173,8 +174,9 @@
 
             // Gestion de la collection
             $films_collection = [];
-            if (array_key_exists('belongs_to_collection', $donnee)) {
+            if (array_key_exists('belongs_to_collection', $donnee) && !is_null($donnee["belongs_to_collection"])) {
                 $films_collection = rechercher_collection($donnee["belongs_to_collection"]["id"]);
+                $films_collection = array_filter($films_collection, fn ($el) => (int)$el["annee_sortie"] <= date('Y', time()));
                 unset($films_collection['f' . $id]);  // On retire le film actuel de la collection
             }
 
@@ -206,6 +208,9 @@
             $resultat["nom"] = $donnee["name"];
             $resultat["annee_sortie"] = substr($donnee["first_air_date"], 0, 4);
             $resultat["saisons"] = $saisons;
+            $resultat["nb_saisons"] = $donnee["number_of_seasons"];
+            $resultat["nb_episodes"] = $donnee["number_of_episodes"];
+            $resultat["createur"] = array_map(fn ($el) => $el["name"], $donnee["created_by"]);
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
             $resultat = [];
@@ -227,6 +232,4 @@
 
         return $resultat;
     }
-
-    print_r(nouveautes_series());
 ?>

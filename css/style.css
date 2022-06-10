@@ -1,3 +1,13 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Hind;
+}
+
 .carte_film
 {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -47,5 +57,191 @@
     padding: 0 10px;   
 }
 
+.en-tete-image {
+    position: relative;
+    height: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    background-position: top;
+    background-size: cover;
+    padding: 20px 50px;
+    color: white;
+    font-family: 'Hind';
+}
+
+.en-tete-image--degrade {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.15) 100%);
+}
+
+.en-tete-image--contenu {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}
+
+.en-tete-image--navbar {
+    font-size: 32px;
+}
+
+.en-tete-image--titre {
+    font-size: 46px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.en-tete-image--infos {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.en-tete-image--infos div {
+    display: flex;
+    gap: 30px;
+}
+
+main {
+    padding: 40px 100px;
+    margin: auto;
+    max-width: 1440px;
+}
+
+.icones_contenu {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.icones_contenu div {
+    display: flex;
+    gap: 30px;
+}
+
+.icones_contenu div img {
+    height: 40px;
+    width: 40px;
+}
+
+.icones_contenu--fournisseurs img {
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    font-size: 40px;
+    margin: 60px 0 5px 0;
+}
+
+.carte-saison, .carte-collection {
+    padding: 30px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.carte-saison--titre {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+} 
 
 
+.carte-saison--resume__indisponible {
+    color: #8C8C8C;
+    font-style: italic;
+}
+
+.carte-collection {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    color: white;
+}
+
+.carte-collection--fond, .carte-collection--titre {
+    position: relative;
+}
+
+.carte-collection--titre {
+    margin: 0 0 10px 0;
+    font-size: 30px;
+}
+
+.carte-collection--resume {
+    margin: 0;
+}
+
+.carte-collection--icone {
+    height: 50px;
+    width: 50px;
+}
+
+.recommendations {
+    display: flex;
+    gap: 60px;
+    overflow-y: scroll;
+    padding: 10px 10px;
+}
+
+.commentaire {
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+.commentaire__edition {
+    resize: none;
+    border: 1px solid #999999;
+    font-family: Hind;
+    margin-bottom: 30px;
+}
+
+.commentaire--boutons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.commentaire--bouton-image {
+    height: 40px;
+}
+
+.commentaire--bouton-envoyer {
+    border: none;
+    color: white;
+    background-color: #D90429;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    padding: 0 15px;
+    font-weight: 600;
+    height: 40px;
+}
+
+.zone-edition-commentaire {
+    margin-top: 20px;
+}
+
+.zone-edition-commentaire input[type=radio] + label .commentaire--bouton-image__active {
+    display: none;
+}
+
+.zone-edition-commentaire input[type=radio]:checked + label .commentaire--bouton-image__active {
+    display: inline;
+}
+
+.zone-edition-commentaire input[type=radio]:checked + label .commentaire--bouton-image__desactive {
+    display: none;
+}
