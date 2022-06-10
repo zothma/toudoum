@@ -232,6 +232,12 @@ h2 {
     font-style: italic;
 }
 
+.carte-saison--lien {
+    cursor: pointer;
+    color: #8C8C8C;
+    margin-left: 10px;
+}
+
 .carte-collection {
     display: flex;
     align-items: center;

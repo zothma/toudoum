@@ -3,6 +3,7 @@ include('src/api.php');
 include('src/carte_film.php');
 
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
+$javascript = "";
 
 function ellipser_texte(string $texte)
 {
@@ -15,6 +16,37 @@ function ellipser_texte(string $texte)
     }
 
     return $resultat;
+}
+
+
+function ellipser_resume_saison(int $nb_saison, string $resume) {
+    global $javascript;
+    $texte_complet = explode(' ', $resume);
+
+    if (count($texte_complet) > 50) {
+        $texte_ellipse = array_slice($texte_complet, 0, 50);
+        $resultat = implode(' ', $texte_ellipse) . '...';
+
+        $javascript .= "
+            document.getElementById('lien_saison_$nb_saison').addEventListener('click', (e) => {
+                const etat = e.currentTarget.getAttribute(\"data-toggle\");
+                if (etat === 'plus') {
+                    document.getElementById('resume_saison_$nb_saison').innerHTML = `$resume`;
+                    e.currentTarget.innerHTML = 'Cacher...';
+                    e.currentTarget.setAttribute('data-toggle', 'moins');
+                } else {
+                    document.getElementById('resume_saison_$nb_saison').innerHTML = `$resultat`;
+                    e.currentTarget.innerHTML = 'Lire la suite...';
+                    e.currentTarget.setAttribute('data-toggle', 'plus');
+                }
+            });
+        ";
+
+        return "<span id='resume_saison_$nb_saison'>$resultat</span>" .
+            "<span id='lien_saison_$nb_saison' class='carte-saison--lien' data-toggle='plus'>Lire la suite...";
+    } else {
+        return "<span id='resume_saison_$nb_saison'>$resume</span>";
+    }
 }
 
 if ($donnee_est_film) {
@@ -87,10 +119,10 @@ if ($donnee_est_film) {
         <?php if (!$donnee_est_film) : ?>
             <h2>Saisons</h2>
             <?php foreach ($donnee["saisons"] as $num_saison => $resume_saison) : ?>
-                <div class="carte-saison">
+                <div class="carte-saison" id="carte-saison-<?php echo $num_saison ?>">
                     <h3 class="carte-saison--titre">Saison <?php echo $num_saison ?></h3>
                     <p class="carte-saison--resume <?php if (strlen($resume_saison) == 0) echo "carte-saison--resume__indisponible" ?>">
-                        <?php echo strlen($resume_saison) > 0 ? $resume_saison : "Résumé indisponible" ?>
+                        <?php echo strlen($resume_saison) > 0 ? ellipser_resume_saison($num_saison, $resume_saison) : "Résumé indisponible" ?>
                     </p>
                 </div>
             <?php endforeach ?>
@@ -136,6 +168,12 @@ if ($donnee_est_film) {
             </div>
         </form>
     </main>
+
+    <?php if (!$donnee_est_film): ?>
+        <script>
+            <?php echo $javascript ?>
+        </script>
+    <?php endif ?>
 </body>
 
 </html>
