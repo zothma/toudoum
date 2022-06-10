@@ -72,7 +72,8 @@
         // Formate un film ou une série pour ne garder que les informations essentielles
         // dans une affiche poster
         $id = $donnee["id"];
-        $poster = IMAGE_URL . $donnee["poster_path"];          // Récupère l'URL complète du poster
+        $poster = IMAGE_URL . $donnee["poster_path"];           // Récupère l'URL complète du poster
+        $fond = FULL_HD_IMAGE_URL . $donnee["backdrop_path"];   // Récupère l'URL complète du fond
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
         if ($est_film ?? $donnee["media_type"] === "movie") {
@@ -80,6 +81,7 @@
                 "nom" => $donnee["title"],
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
                 "poster" => $poster,
+                "fond" => $fond,
                 "genre" => $genre
             ];
         } else {
@@ -87,6 +89,7 @@
                 "nom" => $donnee["name"],
                 "annee_sortie" => substr($donnee["first_air_date"], 0, 4),
                 "poster" => $poster,
+                "fond" => $fond,
                 "genre" => $genre
             ];
         }
