@@ -12,7 +12,7 @@ $donnee = rechercher($_GET["query"]);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Recherche "<?php echo $_GET["query"] ?>" - TOUDOUM</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/polices.css">
 </head>
@@ -29,16 +29,16 @@ $donnee = rechercher($_GET["query"]);
                         <img src="pictures/search-line.svg" alt="Icone Rechercher">
                         <input type="text" placeholder="Rechercher un film ou une série" value="<?php echo $_GET["query"] ?>" name="query">
                     </div>
-                    <button name="submit" type="submit">
+                    <button type="submit">
                         <img src="pictures/arrow-right-line.svg" alt="Flèche Icone">
                     </button>
                 </div>
             </form>
         </div>
     </header>
-    <?php
-
-    ?>
+    <main class="main__recherche">
+        <?php foreach ($donnee as $id => $film) {generer_carte($id, $film, 80);} ?>
+    </main>
 </body>
 
 </html>

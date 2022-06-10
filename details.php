@@ -111,7 +111,7 @@ if ($donnee_est_film) {
 
         <h2>Dans le même genre</h2>
         <div class="recommendations">
-            <?php array_map(fn ($el) => generer_carte($el, 80), $donnee["recommendations"]) ?>
+            <?php array_walk($donnee["recommendations"], fn ($el, $id) => generer_carte($id, $el, 80)) ?>
         </div>
 
         <h2 id="commentaires">Commentaires (0)</h2>
