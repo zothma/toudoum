@@ -2,7 +2,12 @@
 include("./src/carte_film.php");
 include("./src/api.php");
 
+if (!array_key_exists("query", $_GET)) {
+    header("location: /");
+}
+
 $donnee = rechercher($_GET["query"]);
+$aucun_resultat = count($donnee) === 0;
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +23,12 @@ $donnee = rechercher($_GET["query"]);
 </head>
 
 <body>
+    <?php if ($aucun_resultat): ?>
+    <header class="en-tete-image en-tete-image__recherche en-tete-image__recherche_non_trouve">
+    <?php else: ?>
     <header class="en-tete-image en-tete-image__recherche" style="background-image: url('<?php echo reset($donnee)["fond"]; ?>');">
         <div class="en-tete-image--degrade"></div>
+    <?php endif; ?>
         <div class="en-tete-image--contenu">
             <div class="en-tete-image--navbar">TOUDOUM</div>
             <form action="" method="GET">
@@ -36,9 +45,17 @@ $donnee = rechercher($_GET["query"]);
             </form>
         </div>
     </header>
-    <main class="main__recherche">
-        <?php foreach ($donnee as $id => $film) {generer_carte($id, $film, 80);} ?>
-    </main>
+    <?php if($aucun_resultat): ?>
+        <main class="main__recherche_non_trouve">
+            <h3>Zut... Il semble que votre recherche n’ait pas abouti</h3>
+            <img src="pictures/recherche_introuvable.svg" alt="Recherche introuvable">
+        </main>
+    <?php else: ?>
+        <main class="main__recherche">
+            <?php foreach ($donnee as $id => $film) {generer_carte($id, $film, 80);} ?>
+            
+        </main>
+    <?php endif; ?>
 </body>
 
 </html>
