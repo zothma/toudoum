@@ -142,10 +142,12 @@ if ($donnee_est_film) {
             <?php endforeach ?>
         <?php endif ?>
 
-        <h2>Dans le même genre</h2>
-        <div class="recommendations">
-            <?php array_walk($donnee["recommendations"], fn ($el, $id) => generer_carte($id, $el, 80)) ?>
-        </div>
+        <?php if (count($donnee["recommendations"]) !== 0): ?>
+            <h2>Dans le même genre</h2>
+            <div class="recommendations">
+                <?php array_walk($donnee["recommendations"], fn ($el, $id) => generer_carte($id, $el, 80)) ?>
+            </div>
+        <?php endif ?>
 
         <h2 id="commentaires">Commentaires (0)</h2>
         <form class="zone-edition-commentaire" action="details.php" method="get">
