@@ -222,16 +222,54 @@
         return $resultat;
     }
 
-    function nouveautes_films(): array {
-        $donnee = charger_donnee_api("movie/popular");
-        $resultat = array_map(fn ($el) => formater_donnee($el, true), $donnee["results"]);
+    function nouveautes_films(): array 
+    {
+        $donnee = charger_donnee_api("movie/popular")["results"];
+        $resultat = [];
+
+        foreach($donnee as $film) {
+            $id = 'f' . $film['id'];
+            $resultat[$id] = formater_donnee($film, true);
+        }
 
         return $resultat;
     }
 
-    function nouveautes_series(): array {
-        $donnee = charger_donnee_api("tv/popular");
-        $resultat = array_map('formater_donnee', $donnee["results"]);
+    function nouveautes_series(): array 
+    {
+        $donnee = charger_donnee_api("tv/popular")["results"];
+        $resultat = [];
+
+        foreach($donnee as $serie) {
+            $id = 's' . $serie['id'];
+            $resultat[$id] = formater_donnee($serie);
+        }
+
+        return $resultat;
+    }
+
+    function populaires_series(): array 
+    {
+        $donnee = charger_donnee_api("tv/top_rated")["results"];
+        $resultat = [];
+
+        foreach($donnee as $serie) {
+            $id = 's' . $serie['id'];
+            $resultat[$id] = formater_donnee($serie);
+        }
+
+        return $resultat;
+    }
+
+    function populaires_films(): array 
+    {
+        $donnee = charger_donnee_api("movie/top_rated")["results"];
+        $resultat = [];
+
+        foreach($donnee as $film) {
+            $id = 'f' . $film['id'];
+            $resultat[$id] = formater_donnee($film, true);
+        }
 
         return $resultat;
     }
