@@ -27,7 +27,7 @@ $donnee = rechercher($_GET["query"]);
                 <div class="en-tete-image--flex">
                     <div class="en-tete-image--input">
                         <img src="pictures/search-line.svg" alt="Icone Rechercher">
-                        <input type="text" placeholder="Rechercher un film ou une série" value="<?php echo $_GET["query"] ?>" name="query">
+                        <input type="text" placeholder="Rechercher un film ou une série" value="<?php echo $_GET["query"] ?>" name="query" required>
                     </div>
                     <button type="submit">
                         <img src="pictures/arrow-right-line.svg" alt="Flèche Icone">
