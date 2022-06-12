@@ -1,3 +1,5 @@
+@import url(temp.css);
+
 html {
     scroll-behavior: smooth;
 }
@@ -10,6 +12,15 @@ body {
 
 button {
     cursor: pointer;
+}
+
+a {
+    color: #D90429;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 .carte_film
@@ -341,4 +352,61 @@ h2 {
 
 .zone-edition-commentaire input[type=radio]:checked + label .commentaire--bouton-image__desactive {
     display: none;
+}
+
+.menu-connexion-inscription--titre {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.menu-connexion-inscription--formulaire {
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    margin: 0 auto;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.menu-connexion-inscription--formulaire label, input {
+    font-size: 20px;
+}
+
+.menu-connexion-inscription--formulaire label {
+    margin-bottom: 3px;
+}
+
+.menu-connexion-inscription--formulaire input {
+    padding: 10px 25px;
+    border: none;
+    /* border-radius: 10px; */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    margin-bottom: 25px;
+}
+
+.menu-connexion-inscription--formulaire button {
+    height: 50px;
+    margin-top: 30px;
+    border: none;
+    border-radius: 10px;
+    background-color: #D90429;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.menu-connexion-inscription--formulaire h3 {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.menu-connexion-inscription--redirection {
+    text-align: center;
 }
