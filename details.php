@@ -19,7 +19,8 @@ function ellipser_texte(string $texte)
 }
 
 
-function ellipser_resume_saison(int $nb_saison, string $resume) {
+function ellipser_resume_saison(int $nb_saison, string $resume)
+{
     global $javascript;
     $texte_complet = explode(' ', $resume);
 
@@ -131,13 +132,13 @@ if ($donnee_est_film) {
         <?php if ($donnee_est_film && count($donnee["collection"]) > 0) : ?>
             <h2>Dans la même collection</h2>
             <?php foreach ($donnee["collection"] as $id_film => $film_collection) : ?>
-                <div class="carte-collection" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo $film_collection["fond"] ?>')">
+                <a href="details.php?id=<?php echo $id_film ?>" class="carte-collection" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo $film_collection["fond"] ?>')">
                     <div class="carte-collection--contenu">
                         <h3 class="carte-collection--titre"><?php echo $film_collection["nom"] . ' - ' . $film_collection["annee_sortie"] ?></h3>
                         <p class="carte-collection--resume"><?php echo ellipser_texte($film_collection["resume"]) ?></p>
                     </div>
                     <img src="pictures/right_arrow_white.svg" alt="Accéder à la page" class="carte-collection--icone">
-                </div>
+                </a>
             <?php endforeach ?>
         <?php endif ?>
 
@@ -169,7 +170,7 @@ if ($donnee_est_film) {
         </form>
     </main>
 
-    <?php if (!$donnee_est_film): ?>
+    <?php if (!$donnee_est_film) : ?>
         <script>
             <?php echo $javascript ?>
         </script>

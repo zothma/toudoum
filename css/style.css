@@ -8,6 +8,10 @@ body {
     font-family: Hind;
 }
 
+button {
+    cursor: pointer;
+}
+
 .carte_film
 {
     position: relative;
@@ -252,6 +256,7 @@ h2 {
 
 .carte-collection {
     display: flex;
+    text-decoration: none;
     align-items: center;
     gap: 30px;
     background-position: center;
@@ -306,6 +311,7 @@ h2 {
 }
 
 .commentaire--bouton-image {
+    cursor: pointer;
     height: 40px;
 }
 
@@ -318,6 +324,7 @@ h2 {
     padding: 0 15px;
     font-weight: 600;
     height: 40px;
+    cursor: pointer;
 }
 
 .zone-edition-commentaire {
