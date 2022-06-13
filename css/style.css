@@ -276,6 +276,17 @@ h2 {
     font-size: 20px;
 } 
 
+.erreur__center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    font-weight: bolder;
+}
+.erreur__center img{
+    width: 400px;
+}
 
 .carte-saison--resume__indisponible {
     color: #8C8C8C;
