@@ -198,4 +198,42 @@
         return (double) $row[0];
     }
 
+    function compte_util() {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT COUNT(*) FROM Utilisateur;");
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $row = mysqli_fetch_row(mysqli_stmt_get_result($sql));
+        return (double) $row[0];
+    }
+    
+    function compte_commentaire() {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT COUNT(commentaire) FROM Avis;");
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $row = mysqli_fetch_row(mysqli_stmt_get_result($sql));
+        return (double) $row[0];
+    }
+    
+    function affiche_commentaire() {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT COUNT(commentaire) FROM Avis;");
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $row = mysqli_fetch_row(mysqli_stmt_get_result($sql));
+        return (double) $row[0];
+    }
 ?>
