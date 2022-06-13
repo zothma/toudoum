@@ -1,41 +1,21 @@
 <?php
 
-function emptyInputLogin($username, $pwd)
-{
-    $result;
-    if(empty($username) || empty($pwd))
-    {
-        $result = true;
-    }
-    else
-    {
-        $result = false;
-    }
-    
-    return $result;
-}
+include ('module_base.php');
 
-function loginUser($conn, $username, $pwd)
+function loginUser($email, $pwd)
 {
-    $uidExists = uidExists($conn, $username, $pwd);
+    $pwd_crypt = password_hash($pwd, PASSWORD_DEFAULT);
+    $correct = user_exists($email, $pwd);
 
-    if ($uidExists === false)
+    if (!$correct)
     {
         header("location: ../connexion.php?error=wronglogin");
-    }
+    } else {
+        $infos_user = recup_info_user($email, $pwd);
 
-    $pwdHashed = $uidExists["usersPwd"];
-    $checkPwd = password_verify($pwd, $pwdHashed);
-    
-    if ($checkPwd === false)
-    {
-        header("location: ../connexion.php?error=wronglogin");
-    }
-    else if ($checkPwd === true)
-    {
         session_start();
-        $_SESSION["userid"] = $uidExists["usersId"];
-        $_SESSION["useruid"] = $uidExists["usersUid"];
+        $_SESSION["userid"] = $infos_user["id"];
+        $_SESSION["userpp"] = $infos_user["photo"];
         header("location: ../index.php");
         exit();
     }

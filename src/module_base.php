@@ -105,4 +105,39 @@
             return EtatFilm::Dislike;
         }
     }
+
+    function user_exists($email, $pass): bool {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT mdp FROM Utilisateur WHERE email = ?");
+        mysqli_stmt_bind_param($sql, 's', $email);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+
+        return !is_null($ligne) || password_verify($pass, $ligne[0]);
+    }
+
+    function recup_info_user($email, $pass) {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT id_util, photo_pp FROM Utilisateur WHERE email = ? AND mdp = ?;");
+        mysqli_stmt_bind_param($sql, 'ss', $email, $pass);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+
+        return [
+            "id" => $ligne[0],
+            "photo" => $ligne[1]
+        ];
+    }
 ?>

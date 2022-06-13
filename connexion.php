@@ -13,8 +13,8 @@
     <main class="menu-connexion-inscription">
         <h2 class="menu-connexion-inscription--titre">Bienvenue sur TOUDOUM</h2>
         <form class="menu-connexion-inscription--formulaire" action="./src/connexion.inc.php" method="POST">
-            <label for="connexion_utilisateur">Identifiant</label>
-            <input type="text" name="utilisateur" id="connexion_utilisateur" placeholder="Nom" required>
+            <label for="connexion_utilisateur">E-mail</label>
+            <input type="text" name="utilisateur" id="connexion_utilisateur" placeholder="exemple@domaine.com" required>
             <label for="connexion_mdp">Mot de passe</label>
             <input type="password" name="mdp" id="connexion_mdp" placeholder="Mot de Passe" required>
 

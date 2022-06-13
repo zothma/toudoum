@@ -2,19 +2,12 @@
 
 if (isset($_POST["submit"]))
 {
-    $username = $_POST["uid"];
-    $pwd = $_POST["pwd"];
+    $username = $_POST["utilisateur"];
+    $pwd = $_POST["mdp"];
 
-    require_once 'dbh.inc.php';
-    require_once 'functions.inc.php';
+    require_once 'fonctions.inc.php';
 
-    if (emptyInputLogin($username, $pwd) !== false)
-    {
-        header("location: ../connexion.php?error=emptyinput");
-        exit();
-    }
-
-    loginUser($conn, $username, $pwd);
+    loginUser($username, $pwd);
 }
 else
 {
