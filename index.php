@@ -22,7 +22,7 @@ $donnee_popu_series = populaires_series();
     <header class="en-tete-image en-tete-image__recherche" style="background-image: url('<?php echo reset($donnee_nv_movies)["fond"]; ?>');">
         <div class="en-tete-image--degrade"></div>
         <div class="en-tete-image--contenu">
-            <div class="en-tete-image--navbar">TOUDOUM</div>
+            <?php include('src/header.php') ?>
             <form action="recherche.php" method="GET">
                 <div class="en-tete-image--flex">
                     <div class="en-tete-image--input">

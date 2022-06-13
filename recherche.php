@@ -30,7 +30,7 @@ $aucun_resultat = count($donnee) === 0;
         <div class="en-tete-image--degrade"></div>
     <?php endif; ?>
         <div class="en-tete-image--contenu">
-            <div class="en-tete-image--navbar">TOUDOUM</div>
+            <?php include('src/header.php') ?>
             <form action="" method="GET">
                 <h2>Résultats de la recherche</h2>
                 <div class="en-tete-image--flex">

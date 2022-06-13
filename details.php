@@ -70,7 +70,7 @@ if ($donnee_est_film) {
     <header class="en-tete-image" style="background-image: url('<?php echo $donnee['fond']; ?>');">
         <div class="en-tete-image--degrade"></div>
         <div class="en-tete-image--contenu">
-            <div class="en-tete-image--navbar">TOUDOUM</div>
+            <?php include('src/header.php') ?>
             <div>
                 <h2 class="en-tete-image--titre"><?php echo $donnee["nom"] ?></h2>
                 <div class="en-tete-image--infos">
