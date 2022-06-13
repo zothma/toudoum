@@ -4,12 +4,12 @@ body{
 }
 /* TITRE EN HAUT A GAUCHEa*/
 header h2{
-    font-family: 'Inter', sans-serif;
+    font-family: 'Hind', sans-serif;
     color: #fff;
 }
 /* BOUTON DE CONNEXION*/
 header .connexion{
-    font-family: 'Inter', sans-serif;
+    font-family: 'Hind', sans-serif;
     text-transform: uppercase;
     border: 1px solid #fff;
     width: 150px;
@@ -26,7 +26,7 @@ header .connexion{
 
 /*BOUTON D'INSCRIPTION*/
 header .inscription{
-    font-family: 'Inter', sans-serif;
+    font-family: 'Hind', sans-serif;
     text-transform: uppercase;
     border: 1px solid #fff;
     width: 150px;
