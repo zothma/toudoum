@@ -1,9 +1,10 @@
 <?php
+    include('credentials.php');
 
-    $link = mysqli_connect('localhost', 'alexie', '@ChiFouMi2022') or die ('Error
+    $link = mysqli_connect(SQL_URL, SQL_USER, SQL_PASS) or die ('Error
     connecting to mysqli: ' . mysqli_error($link).'\r\n');
 
-    mysqli_select_db($link, 'base');
+    mysqli_select_db($link, SQL_BASE);
     
     function avis_aimer($id) {
         global $link;
