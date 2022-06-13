@@ -10,7 +10,10 @@
             <a href="inscription.php">Inscription</a>
         </div>
         <?php else: ?>
-        <p>Connecté</p>
+        <a href="#" class="en-tete-image--profil">
+            <img src="pictures/profil/<?php echo $_SESSION['userpp'] ?>.png" alt="Profil">
+            <!-- <?php print_r($_SESSION); ?> -->
+        </a>
         <?php endif; ?>
     </div>
 </div>

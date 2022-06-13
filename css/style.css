@@ -198,6 +198,13 @@ a:hover {
     outline: 2px solid white;
 }
 
+
+.en-tete-image--profil img {
+    border-radius: 25px;
+    height: 50px;
+    width: 50px;
+}
+
 .en-tete-image--titre {
     font-size: 46px;
     margin: 0;

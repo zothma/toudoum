@@ -11,7 +11,7 @@ function loginUser($email, $pwd)
     {
         header("location: ../connexion.php?error=wronglogin");
     } else {
-        $infos_user = recup_info_user($email, $pwd);
+        $infos_user = recup_info_user($email);
 
         session_start();
         $_SESSION["userid"] = $infos_user["id"];

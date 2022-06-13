@@ -122,10 +122,10 @@
         return !is_null($ligne) || password_verify($pass, $ligne[0]);
     }
 
-    function recup_info_user($email, $pass) {
+    function recup_info_user($email) {
         global $link;
-        $sql = mysqli_prepare($link, "SELECT id_util, photo_pp FROM Utilisateur WHERE email = ? AND mdp = ?;");
-        mysqli_stmt_bind_param($sql, 'ss', $email, $pass);
+        $sql = mysqli_prepare($link, "SELECT id_util, photo_pp FROM Utilisateur WHERE email = ?;");
+        mysqli_stmt_bind_param($sql, 's', $email);
 
         if (!(mysqli_stmt_execute($sql))) {
             echo "ERREUR : " . mysqli_error($link);
