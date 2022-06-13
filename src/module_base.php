@@ -119,7 +119,7 @@
         $result = mysqli_stmt_get_result($sql);
         $ligne = mysqli_fetch_row($result);
 
-        return !is_null($ligne) || password_verify($pass, $ligne[0]);
+        return !is_null($ligne) && password_verify($pass, $ligne[0]);
     }
 
     function recup_info_user($email) {
