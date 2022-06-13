@@ -12,7 +12,7 @@
     </header>
     <main class="menu-connexion-inscription">
         <h2 class="menu-connexion-inscription--titre">Bienvenue sur TOUDOUM</h2>
-        <form class="menu-connexion-inscription--formulaire" action="" method="POST">
+        <form class="menu-connexion-inscription--formulaire" action="./src/connexion.inc.php" method="POST">
             <label for="connexion_utilisateur">Identifiant</label>
             <input type="text" name="utilisateur" id="connexion_utilisateur" placeholder="Nom" required>
             <label for="connexion_mdp">Mot de passe</label>
