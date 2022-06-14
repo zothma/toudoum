@@ -19,10 +19,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 .carte_film
 {
     position: relative;

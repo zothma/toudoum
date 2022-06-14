@@ -326,4 +326,39 @@
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         return true;
-}
+    }
+
+    function like_film(string $id_film, int $id_utilisateur, bool $avis) {
+        global $link;
+        $sql_select = "SELECT COUNT(*) FROM Avis WHERE id_util = ? AND id_api = ?;";
+        $sql_update = "UPDATE Avis SET aimer=? WHERE id_util = ? AND id_api = ?;";
+        $sql_insert = "INSERT INTO Avis (id_api, id_util, aimer) VALUES (?, ?, ?)";
+
+        $sql = mysqli_prepare($link, $sql_select);
+        mysqli_stmt_bind_param($sql, "is", $id_utilisateur, $id_film);
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $int_avis = intval($avis);
+
+        $compte = mysqli_fetch_row(mysqli_stmt_get_result($sql))[0];
+        if ($compte === 0) {
+            $sql = mysqli_prepare($link, $sql_insert);
+            mysqli_stmt_bind_param($sql, "sii", $id_film, $id_utilisateur, $int_avis);
+
+            if (!(mysqli_stmt_execute($sql))) {
+                echo "ERREUR " . mysqli_error($link);
+                return false; # on retroune false pour dire que ça ne marche pas
+            }
+        } else {
+            $sql = mysqli_prepare($link, $sql_update);
+            mysqli_stmt_bind_param($sql, "iis", $int_avis, $id_utilisateur, $id_film);
+
+            if (!(mysqli_stmt_execute($sql))) {
+                echo "ERREUR " . mysqli_error($link);
+                return false; # on retroune false pour dire que ça ne marche pas
+            }
+        }
+    }

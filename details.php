@@ -1,9 +1,19 @@
 <?php
 include('src/api.php');
 include('src/carte_film.php');
+include_once('src/module_base.php');
 
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 $javascript = "";
+$avis_film = EtatFilm::Rien;
+
+session_start();
+if (isset($_SESSION["userid"])) {
+    if (isset($_GET["aimer"])) {
+        like_film($_GET["id"], $_SESSION["userid"], $_GET["aimer"] === '1');
+    }
+    $avis_film = recuperer_etat_film($_GET["id"], $_SESSION["userid"]);
+}
 
 function ellipser_texte(string $texte)
 {
@@ -55,6 +65,11 @@ if ($donnee_est_film) {
 } else {
     $donnee = detail_serie((int)substr($_GET['id'], 1));
 }
+
+$images_likes = [
+    "pouce_haut" => ($avis_film === EtatFilm::Like) ? 'pictures/green_like.svg' : 'pictures/empty_like.svg',
+    "pouce_bas" => ($avis_film === EtatFilm::Dislike) ? 'pictures/red_dislike.svg' : 'pictures/empty_dislike.svg'
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,8 +108,12 @@ if ($donnee_est_film) {
     <main>
         <div class="icones_contenu">
             <div class="icones_contenu--actions">
-                <img src="pictures/empty_like.svg" alt="J'aime" />
-                <img src="pictures/empty_dislike.svg" alt="Je n'aime pas" />
+                <a href="?aimer=1&id=<?php echo $_GET["id"] ?>">
+                    <img src="<?php echo $images_likes["pouce_haut"] ?>" alt="J'aime" />
+                </a>
+                <a href="?aimer=0&id=<?php echo $_GET["id"] ?>">
+                    <img src="<?php echo $images_likes["pouce_bas"] ?>" alt="Je n'aime pas" />
+                </a>
                 <img src="pictures/empty_watch_later.svg" alt="Regarder plus tard" />
                 <a href="#commentaires">
                     <img src="pictures/empty_comment.svg" alt="Commenter" />
