@@ -500,6 +500,13 @@ h2 {
     margin-bottom: 25px;
 }
 
+input+p
+{
+    color: #D90429;
+    margin : -10px 0;
+    text-align: center;
+}
+
 .menu-connexion-inscription--formulaire button {
     height: 50px;
     margin-top: 30px;

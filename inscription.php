@@ -25,6 +25,19 @@
             <label for="connexion_re_mdp">Confirmez le mot de passe</label>
             <input type="password" name="mdpRepeat" id="connexion_re_mdp" placeholder="Mot de Passe" required>
 
+            <?php if (isset($_GET["error"]))
+            {
+                if ($_GET["error"] == "usernametaken")
+                {
+                    echo "<p>Cet adresse E-mail est déjà utilisée pour un utilisateur.</p>";
+                }
+                else if ($_GET["error"] == "passwordsdontmatch")
+                {
+                    echo "<p>Les mots de passe ne correspondent pas.</p>";
+                }
+            }
+            ?>
+
             <button type="submit" name="submit">S'inscrire</button>
         </form>
 
