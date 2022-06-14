@@ -22,7 +22,7 @@ if (isset($_POST["submit"])) {
 
     $resultat = create_user($nom, $prenom, $email, $pwd);
     if ($resultat) {
-        header("location: ../inscription.php?error=none");
+        header("location: ../connexion.php");
     } else {
         header("location: ../inscription.php?error=stmtfailed");
     }
