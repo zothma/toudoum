@@ -119,12 +119,12 @@
         $result = mysqli_stmt_get_result($sql);
         $ligne = mysqli_fetch_row($result);
 
-        return !is_null($ligne) || password_verify($pass, $ligne[0]);
+        return !is_null($ligne) && password_verify($pass, $ligne[0]);
     }
 
     function recup_info_user($email) {
         global $link;
-        $sql = mysqli_prepare($link, "SELECT id_util, photo_pp FROM Utilisateur WHERE email = ?;");
+        $sql = mysqli_prepare($link, "SELECT id_util, photo_pp, est_valide FROM Utilisateur WHERE email = ?;");
         mysqli_stmt_bind_param($sql, 's', $email);
 
         if (!(mysqli_stmt_execute($sql))) {
@@ -137,14 +137,15 @@
 
         return [
             "id" => $ligne[0],
-            "photo" => $ligne[1]
+            "photo" => $ligne[1],
+            "valide" => $ligne[2]
         ];
     }
 
     function create_user($nom, $prenom, $email, $pwd) : bool {
         global $link;
 
-        $sql = "INSERT INTO Utilisateur(nom, prenom, email, mdp) VALUES (?, ?, ?, ?);";
+        $sql = "INSERT INTO Utilisateur(nom, prenom, email, mdp, lien_validation) VALUES (?, ?, ?, ?, ?);";
         $stmt = mysqli_stmt_init($link);
         if(!mysqli_stmt_prepare($stmt, $sql))
         {
@@ -152,8 +153,45 @@
         }
         $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-        mysqli_stmt_bind_param($stmt, "ssss", $nom, $prenom, $email, $hashedPwd);
+        mysqli_stmt_bind_param($stmt, "sssss", $nom, $prenom, $email, $hashedPwd, uniqid(more_entropy: true));
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         return true;
-}
+    }
+
+    function valider_user(int $id, string $lien): bool {
+        global $link;
+
+        $sql_select = "SELECT lien_validation, est_valide FROM Utilisateur WHERE id_util = ?;";
+        $sql_update = "UPDATE Utilisateur SET est_valide=true WHERE id_util = ?;";
+
+        # On récupère le lien de validation de l'utilisateur
+        $stmt = mysqli_stmt_init($link);
+        if (!mysqli_stmt_prepare($stmt, $sql_select)) {
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $ligne = mysqli_fetch_row($result);
+
+        if (is_null($ligne)) {
+            return false;
+        }
+
+        $deja_valide = $ligne[1];
+        $lien_valide = $ligne[0] == $lien;
+        if ($deja_valide || !$lien_valide) {
+            return false;
+        }
+
+        if (!mysqli_stmt_prepare($stmt, $sql_update)) {
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+
+        return true;
+    }
