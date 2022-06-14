@@ -29,7 +29,7 @@
             {
                 if ($_GET["error"] == "usernametaken")
                 {
-                    echo "<p>Cet adresse E-mail est déjà utilisée pour un utilisateur.</p>";
+                    echo "<p>Cette adresse e-mail est déjà utilisée pour un utilisateur.</p>";
                 }
                 else if ($_GET["error"] == "passwordsdontmatch")
                 {
