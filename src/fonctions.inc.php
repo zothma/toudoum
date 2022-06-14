@@ -1,6 +1,6 @@
 <?php
 
-include ('module_base.php');
+require_once 'module_base.php';
 
 function loginUser($email, $pwd)
 {
@@ -19,6 +19,20 @@ function loginUser($email, $pwd)
         header("location: ../index.php");
         exit();
     }
+}
+
+# Partie Inscription
+function pwdMatch($pwd, $pwdRepeat)
+{
+    if ($pwd !== $pwdRepeat)
+    {
+        $result = false;
+    }
+    else
+    {
+        $result = true;
+    }
+    return $result;
 }
 
 ?>
