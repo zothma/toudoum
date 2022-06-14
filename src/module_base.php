@@ -6,6 +6,12 @@
 
     mysqli_select_db($link, SQL_BASE);
     
+    enum EtatFilm {
+        case Like;
+        case Dislike;
+        case Rien;
+    }
+
     function avis_aimer($id) {
         global $link;
         $sql = mysqli_prepare($link, "SELECT SUM(aimer)/COUNT(*)*100 FROM Avis WHERE id_api = ?;");
@@ -81,7 +87,6 @@
             array_push($T, $row[0]);
         }
         return $T;
-
     }
     
     function compte_film_aimes_pas($id) {
@@ -248,4 +253,26 @@
         return $T;
     }
     
+    function recuperer_etat_film(string $id_film, int $id_utilisateur): EtatFilm | bool {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT aimer FROM Avis WHERE id_util = ? AND id_api = ?;");
+        mysqli_stmt_bind_param($sql, "is", $id_utilisateur, $id_film);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+
+        mysqli_stmt_close($sql);
+        if (is_null($ligne)) {
+            return EtatFilm::Rien;
+        } elseif ($ligne[0] == true) {
+            return EtatFilm::Like;
+        } else {
+            return EtatFilm::Dislike;
+        }
+    }
 ?>
