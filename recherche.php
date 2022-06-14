@@ -56,6 +56,7 @@ $aucun_resultat = count($donnee) === 0;
             
         </main>
     <?php endif; ?>
+    <?php include('src/footer.php') ?>
 </body>
 
 </html>

@@ -23,5 +23,6 @@
 
         <p class="menu-connexion-inscription--redirection">Nouveau sur le site ? <a href="inscription.php">Inscrivez-vous</a> !</p>
     </main>
+    <?php include('src/footer.php') ?>
 </body>
 </html>

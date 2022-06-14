@@ -51,6 +51,7 @@ $donnee_popu_series = populaires_series();
             <?php foreach($donnee_popu_movies as $id => $film) {generer_carte($id, $film, 80);} ?>
         </div>
     </main>
+    <?php include('src/footer.php') ?>
 </body>
 
 </html>

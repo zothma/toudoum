@@ -172,6 +172,8 @@ if ($donnee_est_film) {
         </form>
     </main>
 
+    <?php include('src/footer.php') ?>
+
     <?php if (!$donnee_est_film) : ?>
         <script>
             <?php echo $javascript ?>

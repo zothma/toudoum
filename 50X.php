@@ -14,5 +14,6 @@
         <p>Merci de réessayer plus tard</p>
         <img src="pictures/er50X.png" alt="Erreur Serveur">
     </div>
+    <?php include('src/footer.php') ?>
 </body>
 </html>

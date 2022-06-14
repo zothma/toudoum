@@ -43,5 +43,6 @@
 
         <p class="menu-connexion-inscription--redirection">Déjà inscrit ? <a href="connexion.php">Connexion</a></p>
     </main>
+    <?php include('src/footer.php') ?>
 </body>
 </html>

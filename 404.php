@@ -14,5 +14,6 @@
         <p>Vous semblez perdue... Peut-ếtre retrouverez-vous votre chemin depuis l’accueil</p>
         <img src="pictures/er404.png" alt="Page non trouvée">
     </div>
+    <?php include('src/footer.php') ?>
 </body>
 </html>

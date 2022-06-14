@@ -198,6 +198,13 @@ a:hover {
     outline: 2px solid white;
 }
 
+footer {
+    width: 100%;
+    height: 160px;
+    background-color: black;
+    position: relative;
+    font-family: Hind;
+}
 
 .en-tete-image--profil img {
     border-radius: 25px;
@@ -207,6 +214,43 @@ a:hover {
 
 .en-tete-image--titre {
     font-size: 46px;
+    margin: 0;
+    font-weight: bold;
+}
+.footer--credits {
+    display: flex;
+    flex-direction: column;
+    gap:  20px;
+    align-items: center;
+    color: white;
+    position: absolute;
+    left: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.footer--credits img {
+    height: 20px;
+}
+
+.footer--credits p {
+    margin: 0;
+    color: #CCCACA;
+}
+
+.footer--contact {
+    color: white;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+    
+}
+
+.footer--contact p {
     margin: 0;
     font-weight: bold;
 }
@@ -277,6 +321,17 @@ a:hover {
 }
 
 .en-tete-image--flex button img {
+    width: 30px;
+    height: 30px;
+}
+.footer--logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.footer--logo img {
     width: 30px;
     height: 30px;
 }
@@ -529,4 +584,43 @@ input+p
 
 .menu-connexion-inscription--redirection {
     text-align: center;
+}
+
+.footer--logo p {
+    margin: 0;
+}
+
+.footer--logo p:first-child {
+    font-size: 15px;
+    color: #CCCACA;
+}
+
+.footer--logo p:last-child {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.footer--image {
+    display: flex;
+    gap: 30px;
+}
+
+.footer--image img {
+    height: 33.33px;
+    width: 33.33px;
+}
+
+.footer--retour {
+    position: absolute;
+    right: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.footer--retour img {
+    width: 40px;
+    height: 40px;
 }
