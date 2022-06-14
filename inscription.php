@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="nav-bar__noir">
-        <h1>TOUDOUM</h1>
+        <h1><a href="/">TOU DOUM</a></h1>
     </header>
     <main class="menu-connexion-inscription">
         <h2 class="menu-connexion-inscription--titre">Bienvenue sur TOUDOUM</h2>
