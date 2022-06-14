@@ -224,16 +224,28 @@
         return (double) $row[0];
     }
     
-    function affiche_commentaire() {
+    function affiche_commentaire($id) {
         global $link;
-        $sql = mysqli_prepare($link, "SELECT COUNT(commentaire) FROM Avis;");
+        $sql = mysqli_prepare($link, "SELECT commentaire, nom, prenom, photo_pp, aimer FROM Avis NATURAL JOIN Utilisateur WHERE commentaire is not null AND id_api = ?;");
+        mysqli_stmt_bind_param($sql, "s", $id);
 
         if (!(mysqli_stmt_execute($sql))) {
             echo "ERREUR " . mysqli_error($link);
             return false; # on retroune false pour dire que ça ne marche pas
         }
 
-        $row = mysqli_fetch_row(mysqli_stmt_get_result($sql));
-        return (double) $row[0];
+        $T = [];
+        $resultat = mysqli_stmt_get_result($sql);
+        while( $row = mysqli_fetch_row($resultat) ){
+            array_push($T, [
+                "commentaire" => $row[0],
+                "nom" => $row[1],
+                "prenom" => $row[2],
+                "photo_pp" => $row[3],
+                "aimer" => $row[4]
+            ]);
+        }
+        return $T;
     }
+    
 ?>
