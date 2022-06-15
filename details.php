@@ -175,13 +175,13 @@ $images_likes = [
             <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>">
             <textarea required class="commentaire commentaire__edition" name="commentaire" id="commentaire_personnel" placeholder="Laisser un commentaire..." cols="100" rows="2"></textarea>
             <div class="commentaire--boutons">
-                <input type="radio" name="aimer" id="commentaire_like" value="1" hidden required />
+                <input type="radio" name="aimer" id="commentaire_like" value="1" hidden required <?php echo ($avis_film === EtatFilm::Like) ? "checked": "" ?> />
                 <label for="commentaire_like">
                     <img class="commentaire--bouton-image commentaire--bouton-image__desactive" src="pictures/empty_like.svg" alt="J'aime" />
                     <img class="commentaire--bouton-image commentaire--bouton-image__active" src="pictures/green_like.svg" alt="J'aime" />
                 </label>
 
-                <input type="radio" name="aimer" id="commentaire_dislike" value="0" hidden />
+                <input type="radio" name="aimer" id="commentaire_dislike" value="0" hidden  <?php echo ($avis_film === EtatFilm::Dislike) ? "checked": "" ?>/>
                 <label for="commentaire_dislike">
                     <img class="commentaire--bouton-image commentaire--bouton-image__desactive" src="pictures/empty_dislike.svg" alt="J'aime" />
                     <img class="commentaire--bouton-image commentaire--bouton-image__active" src="pictures/red_dislike.svg" alt="J'aime" />
