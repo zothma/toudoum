@@ -72,6 +72,14 @@ $images_likes = [
     "pouce_bas" => ($avis_film === EtatFilm::Dislike) ? 'pictures/red_dislike.svg' : 'pictures/empty_dislike.svg'
 ];
 ?>
+
+<?php 
+    if (isset($_GET["commentaire"]))
+    {
+        ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -191,7 +199,6 @@ $images_likes = [
             </div>
         </form>
     </main>
-
     <?php      
         $array = avis_commentaire($_GET["id"]);
         foreach($array as $comm)
