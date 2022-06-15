@@ -138,7 +138,7 @@
         }
         return $T;
     }
-    
+    //  cette sae est nulle
     function amis_pas_valide($id) {
         global $link;
         $sql = mysqli_prepare($link, "SELECT DISTINCT u.nom, u.prenom, u.photo_pp FROM Amis a INNER JOIN Utilisateur u ON a.id_util2 = u.id_util WHERE id_util1 = ? AND valider = False;");
@@ -374,5 +374,38 @@
                 echo "ERREUR " . mysqli_error($link);
                 return false; # on retroune false pour dire que ça ne marche pas
             }
+        }
+    }
+
+    function recup_toutes_info_user($id) {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT nom, prenom, photo_pp FROM Utilisateur WHERE id_util = ?;");
+        mysqli_stmt_bind_param($sql, 's', $id);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+
+        return [
+            "nom" => $ligne[0],
+            "photo" => $ligne[1],
+            "prenom" => $ligne[2]
+        ];
+    }
+
+    function ajouter_commentaire($id_api, $id_util, $comm)
+    {
+        global $link;
+        $sql = "UPDATE Avis set commentaire = ? where id_api = ? and id_util = ? ;";
+
+        $sql = mysqli_prepare($link, $sql);
+        mysqli_stmt_bind_param($sql, "sss", $comm, $id_api, $id_util);
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
         }
     }
