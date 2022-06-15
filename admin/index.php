@@ -1,6 +1,10 @@
 <?php
 include_once '../src/module_base.php';
 include_once '../src/carte_commentaire.php';
+
+if (isset($_GET["supprimer"])) {
+    
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,45 +44,29 @@ include_once '../src/carte_commentaire.php';
             </div>
         <div class="admin-droit">
             <h2>Commentaires</h2>
-            <?php      
-                $array = avis_commentaire_all();
-                foreach($array as $comm)
-                {
-                    generer_comm($comm["prenom"], $comm["commentaire"], $comm["aimer"], $comm["photo"], $comm["id"]);
-                }
-            ?>
+            <div id="commentaires">
+                <?php
+                    $array = avis_commentaire_all();
+                    foreach($array as $comm)
+                    {
+                        generer_comm($comm["prenom"], $comm["commentaire"], $comm["aimer"], $comm["photo"], $comm["id"]);
+                    }
+                ?>
+            </div>
         </div>
     </main>
 
-
-
-    <!-- <div class="admin-center">
-        <div class="admin-title">
-
-        </div>
-        <div class="box">
-            <div class="admin-wrapper-info">
-            </div>
-            <div class="admin-new-commentaire">
-                <div class="bloc-blanc">
-                    Commentaire ici
-                </div>
-                <div class="bloc-blanc">
-                    Commentaire ici
-                </div>
-                <div class="bloc-blanc">
-                    Commentaire ici
-                </div>
-                <div class="bloc-blanc">
-                    Commentaire ici
-                </div>
-                <div class="bloc-blanc">
-                    Commentaire ici
-                </div>
-            </div>
-        </div>
-
-    </div> -->
+    <script>
+        let liste_avis = document.getElementById("commentaires");
+        liste_avis.childNodes.forEach(el => {
+            if (el.nodeType == Node.ELEMENT_NODE) {
+                el.addEventListener("dblclick", commentaire => {
+                    id = el.id;
+                    window.location.href = "?supprimer=" + id;
+                })
+            }
+        });
+    </script>
 </body>
 
 </html>
