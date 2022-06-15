@@ -621,3 +621,51 @@ input+p
     width: 40px;
     height: 40px;
 }
+
+.comm
+{
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+    resize: none;
+    border: 1px solid #999999;
+    font-family: Hind;
+    margin-bottom: 30px;
+}
+
+.carte_commentaire
+{
+    padding: 0 140px;
+}
+
+.comm--profil, .comm--libelle
+{
+   display: flex;
+   align-items: center;
+   margin-top: -15px 0;
+}
+
+.comm--libelle
+{
+    margin-left: 15px;
+
+}
+
+.comm--profil h4
+{
+    margin-left: 15px;
+    font-size: 20px;
+}
+
+.comm--libelle p
+{
+    margin-left: 15px;
+}
+
+.comm--profil img
+{
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+}

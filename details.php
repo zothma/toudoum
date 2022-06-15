@@ -2,6 +2,7 @@
 include('src/api.php');
 include('src/carte_film.php');
 include_once('src/module_base.php');
+include ('src/carte_commentaire.php');
 
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 $javascript = "";
@@ -168,7 +169,7 @@ $images_likes = [
             </div>
         <?php endif ?>
 
-        <h2 id="commentaires">Commentaires (0)</h2>
+        <h2 id="commentaires">Commentaires (<?php echo compte_commentaire_film($_GET["id"]); ?>)</h2>
         <form class="zone-edition-commentaire" action="details.php" method="get">
             <!-- Le champs caché permettra de remettre l'id dans l'URL -->
             <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>">
@@ -190,6 +191,14 @@ $images_likes = [
             </div>
         </form>
     </main>
+
+    <?php      
+        $array = avis_commentaire($_GET["id"]);
+        foreach($array as $comm)
+        {
+            generer_comm($comm["prenom"], $comm["commentaire"], $comm["aimer"], $comm["photo"]);
+        }
+    ?>
 
     <?php include('src/footer.php') ?>
 

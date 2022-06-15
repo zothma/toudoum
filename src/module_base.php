@@ -29,7 +29,7 @@
 
     function avis_commentaire($id) {
         global $link;
-        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp FROM Avis NATURAL JOIN Utilisateur WHERE id_api= ?;");
+        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp FROM Avis NATURAL JOIN Utilisateur WHERE id_api= ? and commentaire is not null;");
         mysqli_stmt_bind_param($sql, "s", $id);
 
         if (!(mysqli_stmt_execute($sql))) {
@@ -227,6 +227,20 @@
 
         $row = mysqli_fetch_row(mysqli_stmt_get_result($sql));
         return (double) $row[0];
+    }
+
+    function compte_commentaire_film($id)
+    {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT COUNT(commentaire) FROM Avis where id_api = ?");
+        mysqli_stmt_bind_param($sql, "s", $id);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+        $resultat =mysqli_fetch_row(mysqli_stmt_get_result($sql));
+        return intval($resultat[0]);      
     }
     
     function affiche_commentaire($id) {
