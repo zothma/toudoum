@@ -25,31 +25,6 @@
         $row = mysqli_fetch_row(mysqli_stmt_get_result($sql));
         return (double) $row[0];
     }
-    
-
-    function avis_commentaire($id) {
-        global $link;
-        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp FROM Avis NATURAL JOIN Utilisateur WHERE id_api= ? and commentaire is not null;");
-        mysqli_stmt_bind_param($sql, "s", $id);
-
-        if (!(mysqli_stmt_execute($sql))) {
-            echo "ERREUR " . mysqli_error($link);
-            return false; # on retroune false pour dire que ça ne marche pas
-        }
-
-        $T = [];
-        $resultat = mysqli_stmt_get_result($sql);
-        while( $row = mysqli_fetch_row($resultat) ){
-            array_push($T, [
-                "commentaire" => $row[0],
-                "aimer" => $row[1],
-                "prenom" => $row[2],
-                "nom" => $row[3],
-                "photo" => $row[4]
-            ]);
-        }
-        return $T;
-    }
 
     function recuperer_liste_vu($id) {
         global $link;
@@ -242,10 +217,10 @@
         $resultat =mysqli_fetch_row(mysqli_stmt_get_result($sql));
         return intval($resultat[0]);      
     }
-    
-    function affiche_commentaire($id) {
+
+    function avis_commentaire($id) {
         global $link;
-        $sql = mysqli_prepare($link, "SELECT commentaire, nom, prenom, photo_pp, aimer FROM Avis NATURAL JOIN Utilisateur WHERE commentaire is not null AND id_api = ?;");
+        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp FROM Avis NATURAL JOIN Utilisateur WHERE id_api= ? and commentaire is not null;");
         mysqli_stmt_bind_param($sql, "s", $id);
 
         if (!(mysqli_stmt_execute($sql))) {
@@ -258,10 +233,33 @@
         while( $row = mysqli_fetch_row($resultat) ){
             array_push($T, [
                 "commentaire" => $row[0],
-                "nom" => $row[1],
+                "aimer" => $row[1],
                 "prenom" => $row[2],
-                "photo_pp" => $row[3],
-                "aimer" => $row[4]
+                "nom" => $row[3],
+                "photo" => $row[4]
+            ]);
+        }
+        return $T;
+    }
+
+    function avis_commentaire_all() {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp FROM Avis NATURAL JOIN Utilisateur WHERE commentaire is not null;");
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR " . mysqli_error($link);
+            return false; # on retroune false pour dire que ça ne marche pas
+        }
+
+        $T = [];
+        $resultat = mysqli_stmt_get_result($sql);
+        while( $row = mysqli_fetch_row($resultat) ){
+            array_push($T, [
+                "commentaire" => $row[0],
+                "aimer" => $row[1],
+                "prenom" => $row[2],
+                "nom" => $row[3],
+                "photo" => $row[4]
             ]);
         }
         return $T;
