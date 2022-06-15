@@ -44,7 +44,7 @@ include_once '../src/carte_commentaire.php';
                 $array = avis_commentaire_all();
                 foreach($array as $comm)
                 {
-                    generer_comm($comm["prenom"], $comm["commentaire"], $comm["aimer"], $comm["photo"]);
+                    generer_comm($comm["prenom"], $comm["commentaire"], $comm["aimer"], $comm["photo"], $comm["id"]);
                 }
             ?>
         </div>

@@ -1,8 +1,8 @@
 <?php
-function generer_comm($nom, $comm, $aime, $photo)
+function generer_comm($nom, $comm, $aime, $photo, $id=null)
 {
 ?>
-    <div class="carte_commentaire">
+    <div class="carte_commentaire" <?php echo (is_null($id)) ? '' : "id='$id'" ?>>
     <div class="comm">
         <div class="comm--profil">
             <?php echo '<img src="/pictures/profil/'. $photo . '.png" alt="photo de profil">' ; ?>

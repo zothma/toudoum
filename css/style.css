@@ -634,13 +634,11 @@ input+p
     margin-bottom: 30px;
 }
 
-.carte_commentaire
-{
+.carte_commentaire {
     padding: 0 140px;
 }
 
-.comm--profil, .comm--libelle
-{
+.comm--profil, .comm--libelle {
    display: flex;
    align-items: center;
    margin-top: -15px 0;

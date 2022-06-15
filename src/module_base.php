@@ -244,7 +244,7 @@
 
     function avis_commentaire_all() {
         global $link;
-        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp FROM Avis NATURAL JOIN Utilisateur WHERE commentaire is not null;");
+        $sql = mysqli_prepare($link, "SELECT commentaire, aimer, prenom, nom, photo_pp, id_avis FROM Avis NATURAL JOIN Utilisateur WHERE commentaire is not null;");
 
         if (!(mysqli_stmt_execute($sql))) {
             echo "ERREUR " . mysqli_error($link);
@@ -259,7 +259,8 @@
                 "aimer" => $row[1],
                 "prenom" => $row[2],
                 "nom" => $row[3],
-                "photo" => $row[4]
+                "photo" => $row[4],
+                "id" => $row[5]
             ]);
         }
         return $T;
