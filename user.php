@@ -35,8 +35,8 @@ function carte_user($nom, $prenom, $photo)
         </header>
         <main class="user--card">
             <div class="user--card__profil">
-                <?php 
-                echo carte_user("De la Flamme", "Marc", $_SESSION["userid"]); ?>
+                <?php $array = recup_toutes_info_user($_SESSION["userid"]); ?>
+               <?php echo carte_user($array["nom"], $array["prenom"], $_SESSION["userid"]); ?>
             </div>
             <div class="user--card__nb">
                 <div>
