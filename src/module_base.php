@@ -392,8 +392,8 @@
 
         return [
             "nom" => $ligne[0],
-            "photo" => $ligne[1],
-            "prenom" => $ligne[2]
+            "prenom" => $ligne[1],
+            "photo" => $ligne[2]
         ];
     }
 
@@ -409,3 +409,58 @@
             return false; # on retroune false pour dire que ça ne marche pas
         }
     }
+
+    function nb_commentaires_par_user($id_util)
+    {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT count(*) FROM Avis WHERE id_util = ?;");
+        mysqli_stmt_bind_param($sql, 's', $id_util);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+        return (integer) $ligne[0];
+    }
+
+    function nb_amis($id_util)
+    {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT count(*) FROM Amis WHERE id_util1 = ? and valider=1;");
+        mysqli_stmt_bind_param($sql, 's', $id_util);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+        return (integer) $ligne[0];
+    }
+
+    function amis_utilisateur($id_util)
+    {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT nom, prenom, photo_pp from Amis inner join Utilisateur on Amis.id_util2 = Utilisateur.id_util  where id_util1 = ?;");
+        mysqli_stmt_bind_param($sql, 's', $id_util);
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+        
+        $T = [];
+        $resultat = mysqli_stmt_get_result($sql);
+        while( $row = mysqli_fetch_row($resultat) ){
+            array_push($T, [
+                "nom" => $row[0],
+                "prenom" => $row[1],
+                "photo" => $row[2]
+            ]);
+        }
+        return $T;
+    }
+   

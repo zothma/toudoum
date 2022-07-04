@@ -699,6 +699,105 @@ input+p
     border: 1px solid #999999;
 }
 
+.user--card__nb div
+{
+    font-size: 20px;
+}
+
+.user--card__nb h3
+{
+    text-align:center;
+    font-size:40px;
+    font-family: ADAM;
+    margin: 10px;
+}
+
+.nav-bar__noir2
+{
+    padding: 0 45px;
+    background-color: #000;
+}
+
+.user--card__amis
+{
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 1px solid #999999;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.user--card__amis img
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user--card__amis h2
+{
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+.user--card__amis div 
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.user--card__amis div h2
+{
+    font-size: 20px;
+    margin-left: -150px;
+    margin-bottom: 5px;
+}
+
+.logout-button
+{
+    position: absolute;
+    top: 210px;
+    right: 725px;
+}
+
+.user--card__lists
+{
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user--card__lists button
+{
+    border-radius: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center ;
+    width: 780px;
+    background-color: #F14156;
+    border: none;
+    color: #fff;
+    font-family: Hind;
+    font-size: 20px;
+}
+
+.user--card__left_button
+{
+    display: flex;    
+}
+
+.user--card__left_button p, .user--card__left_button img
+{
+    margin-left: 10px;
+}
+
+.user--card__lists button+button
+{
+    background-color: #D90429;
+}
+
 .menu-connexion-inscription
 {
     padding-bottom: 139px;
