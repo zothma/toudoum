@@ -3,10 +3,10 @@
 
     // définition des constantes
     const API_KEY = "e93f866871a4e28d2076a2475e885408";
-    const API_URL = "http://api.themoviedb.org/3/";
-    const IMAGE_URL = "http://image.tmdb.org/t/p/w300";
-    const HD_IMAGE_URL = "http://image.tmdb.org/t/p/w1280";
-    const FULL_HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
+    const API_URL = "https://api.themoviedb.org/3/";
+    const IMAGE_URL = "https://image.tmdb.org/t/p/w300";
+    const HD_IMAGE_URL = "https://image.tmdb.org/t/p/w1280";
+    const FULL_HD_IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
     function charger_donnee_api(string $ressource, array $options = NULL): array {
         # Génère l'URL de la donnée recherchée, puis renvoie le résultat sous
