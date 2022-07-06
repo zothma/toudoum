@@ -129,6 +129,17 @@
         return $resultat;
     }
 
+    function recuperer_par_id(string $string_id): array {
+        // récupère les informations du film nécessaires pour une affiche
+        $est_film = str_starts_with($string_id, 'f');
+        
+        $prefix = $est_film ? 'movie' : 'tv';
+        $id = intval(substr($string_id, 1));
+        $donnee = charger_donnee_api("$prefix/$id");
+
+        return formater_donnee($donnee, $est_film);
+    }
+
     function rechercher_collection(int $id_collection) {
         // Récupère tous les films d'une collection
         $contenu_brut = charger_donnee_api("collection/$id_collection");
