@@ -1,6 +1,4 @@
 <?php
-    error_reporting(E_ERROR | E_PARSE);
-
     // définition des constantes
     const API_KEY = "e93f866871a4e28d2076a2475e885408";
     const API_URL = "https://api.themoviedb.org/3/";
@@ -92,7 +90,7 @@
         $fond = FULL_HD_IMAGE_URL . $donnee["backdrop_path"];   // Récupère l'URL complète du fond
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
-        if ($est_film ?? $donnee["media_type"] === "movie") {
+        if ($est_film ?? (isset($donnee["media_type"]) && $donnee["media_type"] === "movie")) {
             $donnee_formate = [
                 "nom" => $donnee["title"],
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
