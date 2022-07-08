@@ -200,6 +200,9 @@
         # Récupère les données détaillées d'un film
         try {
             $donnee = charger_donnee_api("movie/$id", ["append_to_response" => "credits,watch/providers,recommendations"]);
+            if (!film_serie_valide($donnee, true)) {
+                throw new TypeError("Film invalide");
+            }
             $resultat = detail_general($donnee);
 
             // Gestion de la collection
@@ -225,6 +228,9 @@
         # Récupère les données détaillées d'une série
         try {
             $donnee = charger_donnee_api("tv/$id", ["append_to_response" => "credits,watch/providers,recommendations"]);
+            if (!film_serie_valide($donnee, false)) {
+                throw new TypeError("Série invalide");
+            }
             $resultat = detail_general($donnee);
 
             // Gestion des résumés des saisons
