@@ -5,6 +5,19 @@ include('src/carte_film.php');
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 $javascript = "";
 
+if ($donnee_est_film) {
+    $donnee = detail_film((int)substr($_GET['id'], 1));
+} else {
+    $donnee = detail_serie((int)substr($_GET['id'], 1));
+}
+
+// Vérifie si la donnée existe, sinon retourne la page 404
+if ($donnee === []) {
+    include_once('404.php');
+    http_response_code(404);
+    die();
+}
+
 function ellipser_texte(string $texte)
 {
     $texte_complet = explode(' ', $texte);
@@ -48,12 +61,6 @@ function ellipser_resume_saison(int $nb_saison, string $resume)
     } else {
         return "<span id='resume_saison_$nb_saison'>$resume</span>";
     }
-}
-
-if ($donnee_est_film) {
-    $donnee = detail_film((int)substr($_GET['id'], 1));
-} else {
-    $donnee = detail_serie((int)substr($_GET['id'], 1));
 }
 ?>
 <!DOCTYPE html>
