@@ -7,6 +7,7 @@ include ('src/carte_commentaire.php');
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 $javascript = "";
 $avis_film = EtatFilm::Rien;
+$liste_regarder = false;
 
 session_start();
 if (isset($_SESSION["userid"])) {
@@ -14,6 +15,7 @@ if (isset($_SESSION["userid"])) {
         like_film($_GET["id"], $_SESSION["userid"], $_GET["aimer"] === '1');
     }
     $avis_film = recuperer_etat_film($_GET["id"], $_SESSION["userid"]);
+    $liste_regarder = recuperer_etat_film_a_voir($_GET["id"], $_SESSION["userid"]);
 }
 
 function ellipser_texte(string $texte)
@@ -71,6 +73,10 @@ $images_likes = [
     "pouce_haut" => ($avis_film === EtatFilm::Like) ? 'pictures/green_like.svg' : 'pictures/empty_like.svg',
     "pouce_bas" => ($avis_film === EtatFilm::Dislike) ? 'pictures/red_dislike.svg' : 'pictures/empty_dislike.svg'
 ];
+
+$image_clock = [
+    "regarder" => ($liste_regarder === true) ? 'pictures/filled_watch_later.svg' : 'pictures/empty_watch_later.svg'
+];
 ?>
 
 <?php 
@@ -78,6 +84,12 @@ $images_likes = [
     {
         ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
     }
+?>
+
+<?php if (isset($_GET["regarder"]) && !$liste_regarder)
+{
+    ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
+}
 ?>
 
 <!DOCTYPE html>
@@ -123,7 +135,10 @@ $images_likes = [
                 <a href="?aimer=0&id=<?php echo $_GET["id"] ?>">
                     <img src="<?php echo $images_likes["pouce_bas"] ?>" alt="Je n'aime pas" />
                 </a>
-                <img src="pictures/empty_watch_later.svg" alt="Regarder plus tard" />
+                <a href="?regarder&id=<?php echo $_GET["id"] ?>">
+                    <img src="<?php echo $image_clock["regarder"] ?>" alt="Regarder plus tard" title="Regarder plus tard"/>
+                </a>
+                
                 <a href="#commentaires">
                     <img src="pictures/empty_comment.svg" alt="Commenter" />
                 </a>

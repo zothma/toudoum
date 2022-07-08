@@ -680,7 +680,7 @@ input+p
     padding-bottom: 30px;
 }
 
-.user--card__profil img
+.user--card__profil_pp
 {
     width: 80px;
     height: 80px;
@@ -756,9 +756,10 @@ input+p
 
 .logout-button
 {
-    position: absolute;
-    top: 210px;
-    right: 725px;
+    margin-left: 20px;
+    width: 24px;
+    height: 24px;
+    padding-bottom: 30px;
 }
 
 .user--card__lists
@@ -796,6 +797,11 @@ input+p
 .user--card__lists button+button
 {
     background-color: #D90429;
+}
+
+.nav-bar__noir2+h2
+{
+    text-align: center;
 }
 
 .menu-connexion-inscription
