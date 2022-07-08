@@ -1,9 +1,22 @@
 <?php
 include('src/api.php');
 include('src/carte_film.php');
+include_once('src/module_base.php');
+include ('src/carte_commentaire.php');
 
 $donnee_est_film = str_starts_with($_GET['id'], 'f');
 $javascript = "";
+$avis_film = EtatFilm::Rien;
+$liste_regarder = false;
+
+session_start();
+if (isset($_SESSION["userid"])) {
+    if (isset($_GET["aimer"])) {
+        like_film($_GET["id"], $_SESSION["userid"], $_GET["aimer"] === '1');
+    }
+    $avis_film = recuperer_etat_film($_GET["id"], $_SESSION["userid"]);
+    $liste_regarder = recuperer_etat_film_a_voir($_GET["id"], $_SESSION["userid"]);
+}
 
 if ($donnee_est_film) {
     $donnee = detail_film((int)substr($_GET['id'], 1));
@@ -62,7 +75,26 @@ function ellipser_resume_saison(int $nb_saison, string $resume)
         return "<span id='resume_saison_$nb_saison'>$resume</span>";
     }
 }
+
+$images_likes = [
+    "pouce_haut" => ($avis_film === EtatFilm::Like) ? 'pictures/green_like.svg' : 'pictures/empty_like.svg',
+    "pouce_bas" => ($avis_film === EtatFilm::Dislike) ? 'pictures/red_dislike.svg' : 'pictures/empty_dislike.svg'
+];
+
+$image_clock = [
+    "regarder" => ($liste_regarder === true) ? 'pictures/filled_watch_later.svg' : 'pictures/empty_watch_later.svg'
+];
+if (isset($_GET["commentaire"]))
+{
+    ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
+}
+
+if (isset($_GET["regarder"]) && !$liste_regarder)
+{
+    ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,9 +132,16 @@ function ellipser_resume_saison(int $nb_saison, string $resume)
     <main>
         <div class="icones_contenu">
             <div class="icones_contenu--actions">
-                <img src="pictures/empty_like.svg" alt="J'aime" />
-                <img src="pictures/empty_dislike.svg" alt="Je n'aime pas" />
-                <img src="pictures/empty_watch_later.svg" alt="Regarder plus tard" />
+                <a href="?aimer=1&id=<?php echo $_GET["id"] ?>">
+                    <img src="<?php echo $images_likes["pouce_haut"] ?>" alt="J'aime" />
+                </a>
+                <a href="?aimer=0&id=<?php echo $_GET["id"] ?>">
+                    <img src="<?php echo $images_likes["pouce_bas"] ?>" alt="Je n'aime pas" />
+                </a>
+                <a href="?regarder&id=<?php echo $_GET["id"] ?>">
+                    <img src="<?php echo $image_clock["regarder"] ?>" alt="Regarder plus tard" title="Regarder plus tard"/>
+                </a>
+                
                 <a href="#commentaires">
                     <img src="pictures/empty_comment.svg" alt="Commenter" />
                 </a>
@@ -156,19 +195,19 @@ function ellipser_resume_saison(int $nb_saison, string $resume)
             </div>
         <?php endif ?>
 
-        <h2 id="commentaires">Commentaires (0)</h2>
+        <h2 id="commentaires">Commentaires (<?php echo compte_commentaire_film($_GET["id"]); ?>)</h2>
         <form class="zone-edition-commentaire" action="details.php" method="get">
             <!-- Le champs caché permettra de remettre l'id dans l'URL -->
             <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>">
             <textarea required class="commentaire commentaire__edition" name="commentaire" id="commentaire_personnel" placeholder="Laisser un commentaire..." cols="100" rows="2"></textarea>
             <div class="commentaire--boutons">
-                <input type="radio" name="aimer" id="commentaire_like" value="1" hidden required />
+                <input type="radio" name="aimer" id="commentaire_like" value="1" hidden required <?php echo ($avis_film === EtatFilm::Like) ? "checked": "" ?> />
                 <label for="commentaire_like">
                     <img class="commentaire--bouton-image commentaire--bouton-image__desactive" src="pictures/empty_like.svg" alt="J'aime" />
                     <img class="commentaire--bouton-image commentaire--bouton-image__active" src="pictures/green_like.svg" alt="J'aime" />
                 </label>
 
-                <input type="radio" name="aimer" id="commentaire_dislike" value="0" hidden />
+                <input type="radio" name="aimer" id="commentaire_dislike" value="0" hidden  <?php echo ($avis_film === EtatFilm::Dislike) ? "checked": "" ?>/>
                 <label for="commentaire_dislike">
                     <img class="commentaire--bouton-image commentaire--bouton-image__desactive" src="pictures/empty_dislike.svg" alt="J'aime" />
                     <img class="commentaire--bouton-image commentaire--bouton-image__active" src="pictures/red_dislike.svg" alt="J'aime" />
@@ -178,6 +217,13 @@ function ellipser_resume_saison(int $nb_saison, string $resume)
             </div>
         </form>
     </main>
+    <?php      
+        $array = avis_commentaire($_GET["id"]);
+        foreach($array as $comm)
+        {
+            generer_comm($comm["prenom"], $comm["commentaire"], $comm["aimer"], $comm["photo"]);
+        }
+    ?>
 
     <?php include('src/footer.php') ?>
 

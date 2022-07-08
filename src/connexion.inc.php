@@ -12,7 +12,4 @@ if (isset($_POST["submit"]))
 else
 {
     header("location: ../connexion.php");
-}
-
-
-?>
+}?>
