@@ -9,3 +9,7 @@
 .nav-bar__noir h1 {
     margin: 0;
 }
+
+.nav-bar__noir h1 a {
+    color: white;
+}

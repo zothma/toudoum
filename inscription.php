@@ -8,14 +8,14 @@
 </head>
 <body>
     <header class="nav-bar__noir">
-        <h1>TOUDOUM</h1>
+        <h1><a href="/">TOU DOUM</a></h1>
     </header>
     <main class="menu-connexion-inscription">
         <h2 class="menu-connexion-inscription--titre">Bienvenue sur TOUDOUM</h2>
         <form class="menu-connexion-inscription--formulaire" action="./src/inscription.inc.php" method="POST">
             <h3>Créez votre compte</h3>
             <label for="inscription_email">E-mail</label>
-            <input type="text" name="mail" id="inscription_email" placeholder="exemple@domaine.com" required>
+            <input type="email" name="mail" id="inscription_email" placeholder="exemple@domaine.com" required>
             <label for="inscription_nom">Nom</label>
             <input type="text" name="nom" id="inscription_nom" placeholder="Nom" required>
             <label for="inscription_prenom">Prenom</label>

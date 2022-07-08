@@ -8,6 +8,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Hind;
+    min-height: 100vh;
 }
 
 button {
@@ -17,10 +18,6 @@ button {
 a {
     color: #D90429;
     text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 .carte_film
@@ -623,4 +620,189 @@ input+p
 .footer--retour img {
     width: 40px;
     height: 40px;
+}
+
+.comm
+{
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+    resize: none;
+    border: 1px solid #999999;
+    font-family: Hind;
+    margin-bottom: 30px;
+}
+
+.carte_commentaire {
+    padding: 0 140px;
+}
+
+.comm--profil, .comm--libelle {
+   display: flex;
+   align-items: center;
+   margin-top: -15px 0;
+}
+
+.comm--libelle
+{
+    margin-left: 15px;
+
+}
+
+.comm--profil h4
+{
+    margin-left: 15px;
+    font-size: 20px;
+}
+
+.comm--libelle p
+{
+    margin-left: 15px;
+}
+
+.comm--profil img
+{
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+}
+
+
+.user--card__profil
+{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-family: Hind;
+    padding-bottom: 30px;
+}
+
+.user--card__profil_pp
+{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user--card__nb
+{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 1px solid #999999;
+}
+
+.user--card__nb div
+{
+    font-size: 20px;
+}
+
+.user--card__nb h3
+{
+    text-align:center;
+    font-size:40px;
+    font-family: ADAM;
+    margin: 10px;
+}
+
+.nav-bar__noir2
+{
+    padding: 0 45px;
+    background-color: #000;
+}
+
+.user--card__amis
+{
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 1px solid #999999;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.user--card__amis img
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user--card__amis h2
+{
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+.user--card__amis div 
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.user--card__amis div h2
+{
+    font-size: 20px;
+    margin-left: -150px;
+    margin-bottom: 5px;
+}
+
+.logout-button
+{
+    margin-left: 20px;
+    width: 24px;
+    height: 24px;
+    padding-bottom: 30px;
+}
+
+.user--card__lists
+{
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user--card__lists button
+{
+    border-radius: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center ;
+    width: 780px;
+    background-color: #F14156;
+    border: none;
+    color: #fff;
+    font-family: Hind;
+    font-size: 20px;
+}
+
+.user--card__left_button
+{
+    display: flex;    
+}
+
+.user--card__left_button p, .user--card__left_button img
+{
+    margin-left: 10px;
+}
+
+.user--card__lists button+button
+{
+    background-color: #D90429;
+}
+
+.nav-bar__noir2+h2
+{
+    text-align: center;
+}
+
+.menu-connexion-inscription
+{
+    padding-bottom: 139px;
 }

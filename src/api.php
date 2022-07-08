@@ -1,12 +1,10 @@
 <?php
-    error_reporting(E_ERROR | E_PARSE);
-
     // définition des constantes
     const API_KEY = "e93f866871a4e28d2076a2475e885408";
-    const API_URL = "http://api.themoviedb.org/3/";
-    const IMAGE_URL = "http://image.tmdb.org/t/p/w300";
-    const HD_IMAGE_URL = "http://image.tmdb.org/t/p/w1280";
-    const FULL_HD_IMAGE_URL = "http://image.tmdb.org/t/p/original";
+    const API_URL = "https://api.themoviedb.org/3/";
+    const IMAGE_URL = "https://image.tmdb.org/t/p/w300";
+    const HD_IMAGE_URL = "https://image.tmdb.org/t/p/w1280";
+    const FULL_HD_IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
     function charger_donnee_api(string $ressource, array $options = NULL): array {
         # Génère l'URL de la donnée recherchée, puis renvoie le résultat sous
@@ -48,6 +46,19 @@
         }
     }
 
+    function recuperer_date(array $objet): int {
+        // Récupère la date de sortie d'un film ou d'un série
+        $resultat = 0;
+
+        if (array_key_exists("release_date", $objet)) {
+            $resultat = strtotime($objet["release_date"]);
+        } else if (array_key_exists("first_air_date", $objet)) {
+            $resultat = strtotime($objet["first_air_date"]);
+        }
+
+        return $resultat;
+    }
+
     function film_serie_valide(array $objet): bool {
         # Vérifie si l'objet passé en paramètre est un film ou une série conforme
         $backdrop_valide = array_key_exists('backdrop_path', $objet);
@@ -65,7 +76,10 @@
             $type_correct = $objet["media_type"] === "movie" || $objet["media_type"] === "tv";
         }
 
-        return $backdrop_valide && $poster_valide && $type_correct;
+        $date = recuperer_date($objet);
+        $date_correcte = $date <= time() && $date != 0;
+
+        return $backdrop_valide && $poster_valide && $type_correct && $date_correcte;
     }
 
     function formater_donnee(array $donnee, bool $est_film = null) {
@@ -76,7 +90,7 @@
         $fond = FULL_HD_IMAGE_URL . $donnee["backdrop_path"];   // Récupère l'URL complète du fond
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
 
-        if ($est_film ?? $donnee["media_type"] === "movie") {
+        if ($est_film ?? (isset($donnee["media_type"]) && $donnee["media_type"] === "movie")) {
             $donnee_formate = [
                 "nom" => $donnee["title"],
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
@@ -113,12 +127,24 @@
         return $resultat;
     }
 
+    function recuperer_par_id(string $string_id): array {
+        // récupère les informations du film nécessaires pour une affiche
+        $est_film = str_starts_with($string_id, 'f');
+        
+        $prefix = $est_film ? 'movie' : 'tv';
+        $id = intval(substr($string_id, 1));
+        $donnee = charger_donnee_api("$prefix/$id");
+
+        return formater_donnee($donnee, $est_film);
+    }
+
     function rechercher_collection(int $id_collection) {
         // Récupère tous les films d'une collection
-        $donnee = charger_donnee_api("collection/$id_collection");
+        $contenu_brut = charger_donnee_api("collection/$id_collection");
+        $contenu_filtre = array_filter($contenu_brut["parts"], 'film_serie_valide');
 
         $resultat = [];
-        foreach ($donnee["parts"] as $film) {
+        foreach ($contenu_filtre as $film) {
             $film_formate = [
                 "nom" => $film["title"],
                 "annee_sortie" => substr($film["release_date"], 0, 4),
@@ -134,8 +160,8 @@
 
     function detail_general(array $donnee): array {
         // Retourne les données générales rendues par les films et les séries
-        $get_name = fn ($el) => $el["name"];
 
+        $get_name = fn ($el) => $el["name"];
         $genres = array_map($get_name, $donnee["genres"]);
         $acteurs = array_map($get_name, array_slice($donnee["credits"]["cast"], 0, 10));
         $production = array_map($get_name, $donnee["production_companies"]);
@@ -151,7 +177,8 @@
         }
 
         $recommendations = [];
-        foreach (array_slice($donnee["recommendations"]["results"], 0, 5) as $film) {
+        $recommendations_brutes = array_filter($donnee["recommendations"]["results"], 'film_serie_valide');
+        foreach (array_slice($recommendations_brutes, 0, 5) as $film) {
             $film_formate = formater_donnee($film);
             $id = ($film["media_type"] === "movie" ? 'f' : 's') . $film["id"];
             $recommendations[$id] = $film_formate;
@@ -173,13 +200,15 @@
         # Récupère les données détaillées d'un film
         try {
             $donnee = charger_donnee_api("movie/$id", ["append_to_response" => "credits,watch/providers,recommendations"]);
+            if (!film_serie_valide($donnee, true)) {
+                throw new TypeError("Film invalide");
+            }
             $resultat = detail_general($donnee);
 
             // Gestion de la collection
             $films_collection = [];
             if (array_key_exists('belongs_to_collection', $donnee) && !is_null($donnee["belongs_to_collection"])) {
                 $films_collection = rechercher_collection($donnee["belongs_to_collection"]["id"]);
-                $films_collection = array_filter($films_collection, fn ($el) => (int)$el["annee_sortie"] <= date('Y', time()));
                 unset($films_collection['f' . $id]);  // On retire le film actuel de la collection
             }
 
@@ -190,7 +219,6 @@
         catch (TypeError $err) {
             # Erreur 404, film non trouvé
             $resultat = [];
-            echo $err;
         }
 
         return $resultat;
@@ -200,6 +228,9 @@
         # Récupère les données détaillées d'une série
         try {
             $donnee = charger_donnee_api("tv/$id", ["append_to_response" => "credits,watch/providers,recommendations"]);
+            if (!film_serie_valide($donnee, false)) {
+                throw new TypeError("Série invalide");
+            }
             $resultat = detail_general($donnee);
 
             // Gestion des résumés des saisons
@@ -224,10 +255,11 @@
 
     function nouveautes_films(): array 
     {
-        $donnee = charger_donnee_api("movie/popular")["results"];
+        $contenu_brut = charger_donnee_api("movie/popular")["results"];
+        $contenu_filtre = array_filter($contenu_brut, 'film_serie_valide');
         $resultat = [];
 
-        foreach($donnee as $film) {
+        foreach($contenu_filtre as $film) {
             $id = 'f' . $film['id'];
             $resultat[$id] = formater_donnee($film, true);
         }
@@ -237,10 +269,11 @@
 
     function nouveautes_series(): array 
     {
-        $donnee = charger_donnee_api("tv/popular")["results"];
+        $contenu_brut = charger_donnee_api("tv/popular")["results"];
+        $contenu_filtre = array_filter($contenu_brut, 'film_serie_valide');
         $resultat = [];
 
-        foreach($donnee as $serie) {
+        foreach($contenu_filtre as $serie) {
             $id = 's' . $serie['id'];
             $resultat[$id] = formater_donnee($serie);
         }
@@ -250,10 +283,11 @@
 
     function populaires_series(): array 
     {
-        $donnee = charger_donnee_api("tv/top_rated")["results"];
+        $contenu_brut = charger_donnee_api("tv/top_rated")["results"];
+        $contenu_filtre = array_filter($contenu_brut, 'film_serie_valide');
         $resultat = [];
 
-        foreach($donnee as $serie) {
+        foreach($contenu_filtre as $serie) {
             $id = 's' . $serie['id'];
             $resultat[$id] = formater_donnee($serie);
         }
@@ -263,10 +297,11 @@
 
     function populaires_films(): array 
     {
-        $donnee = charger_donnee_api("movie/top_rated")["results"];
+        $contenu_brut = charger_donnee_api("movie/top_rated")["results"];
+        $contenu_filtre = array_filter($contenu_brut, 'film_serie_valide');
         $resultat = [];
 
-        foreach($donnee as $film) {
+        foreach($contenu_filtre as $film) {
             $id = 'f' . $film['id'];
             $resultat[$id] = formater_donnee($film, true);
         }
