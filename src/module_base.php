@@ -464,3 +464,47 @@
         return $T;
     }
    
+
+    function ajouter_film_liste_a_voir($id_film, $id_util) : bool
+    {
+        global $link;
+
+        $sql = "INSERT INTO Film_à_voir (id_api, id_util) values(?,?);";
+        $stmt = mysqli_stmt_init($link);
+
+        if (!(mysqli_stmt_prepare($stmt, $sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+        mysqli_stmt_bind_param($stmt, 'ss', $id_film, $id_util);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        return true;
+    }
+    
+    function recuperer_etat_film_a_voir($id_film, $id_util) : bool
+    {
+        global $link;
+
+        $sql = mysqli_prepare($link, "SELECT count(*) FROM Film_à_voir WHERE id_util = ? AND id_api = ? ;");
+        mysqli_stmt_bind_param($sql, "ss", $id_util, $id_film);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+        
+        mysqli_stmt_close($sql);
+
+        if ($ligne[0] == 0 )
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }

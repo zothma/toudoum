@@ -2,7 +2,7 @@
 function carte_user($nom, $prenom, $photo)
 {
 ?>
-    <img src="./pictures/profil/<?php echo $photo ?>.png" alt="photo de profil">
+    <img src="./pictures/profil/<?php echo $photo ?>.png" alt="photo de profil" class="user--card__profil_pp">
     <h2><?php echo $prenom . "\n" . $nom ; ?></h2>
 <?php
 } 
@@ -30,14 +30,14 @@ function carte_user($nom, $prenom, $photo)
                 require_once 'src/module_base.php';
             ?>
         </div>
-        <a href="./src/deconnexion.inc.php" class="logout-button" title="Se déconnecter">
-            <img src="./pictures/logout_button.svg" alt="bouton logout">
-        </a>
-                
+
         <main class="user--card">
             <div class="user--card__profil">
                 <?php $array = recup_toutes_info_user($_SESSION["userid"]); ?>
                <?php echo carte_user($array["nom"], $array["prenom"], $array["photo"]); ?>
+               <a href="./src/deconnexion.inc.php" class="logout-button" title="Se déconnecter">
+                    <img src="./pictures/logout_button.svg" alt="bouton logout">
+            </a>
             </div>
             <div class="user--card__nb">
                 <div>
@@ -65,14 +65,14 @@ function carte_user($nom, $prenom, $photo)
                 </div>
             </div>
             <div class="user--card__lists">
-                <button>
+                <button  onclick="window.location.href = 'liste_films_a_voir.php'">
                     <div class="user--card__left_button">
                         <img src ="pictures/clock_button.svg" alt="logo films à voir">
                         <p>Films & séries à voir </p>
                     </div>
                     <img src ="pictures/arrow.svg" alt="logo flèche">
                 </button>
-                <button>
+                <button onclick="window.location.href = 'liste_films_visionnées.php'">
                     <div class="user--card__left_button">
                         <img src="pictures/eye_button.svg" alt="logo films visionnés">
                         <p>Films & séries visionnées </p>
@@ -83,5 +83,5 @@ function carte_user($nom, $prenom, $photo)
         </main>
     <h1 style= "font-size: 90px"></h1>
     <?php include('src/footer.php') ?>
-</body>
+</body> 
 </html>
