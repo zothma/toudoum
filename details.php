@@ -18,6 +18,19 @@ if (isset($_SESSION["userid"])) {
     $liste_regarder = recuperer_etat_film_a_voir($_GET["id"], $_SESSION["userid"]);
 }
 
+if ($donnee_est_film) {
+    $donnee = detail_film((int)substr($_GET['id'], 1));
+} else {
+    $donnee = detail_serie((int)substr($_GET['id'], 1));
+}
+
+// Vérifie si la donnée existe, sinon retourne la page 404
+if ($donnee === []) {
+    include_once('404.php');
+    http_response_code(404);
+    die();
+}
+
 function ellipser_texte(string $texte)
 {
     $texte_complet = explode(' ', $texte);
@@ -63,12 +76,6 @@ function ellipser_resume_saison(int $nb_saison, string $resume)
     }
 }
 
-if ($donnee_est_film) {
-    $donnee = detail_film((int)substr($_GET['id'], 1));
-} else {
-    $donnee = detail_serie((int)substr($_GET['id'], 1));
-}
-
 $images_likes = [
     "pouce_haut" => ($avis_film === EtatFilm::Like) ? 'pictures/green_like.svg' : 'pictures/empty_like.svg',
     "pouce_bas" => ($avis_film === EtatFilm::Dislike) ? 'pictures/red_dislike.svg' : 'pictures/empty_dislike.svg'
@@ -77,16 +84,12 @@ $images_likes = [
 $image_clock = [
     "regarder" => ($liste_regarder === true) ? 'pictures/filled_watch_later.svg' : 'pictures/empty_watch_later.svg'
 ];
-?>
+if (isset($_GET["commentaire"]))
+{
+    ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
+}
 
-<?php 
-    if (isset($_GET["commentaire"]))
-    {
-        ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
-    }
-?>
-
-<?php if (isset($_GET["regarder"]) && !$liste_regarder)
+if (isset($_GET["regarder"]) && !$liste_regarder)
 {
     ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
 }
