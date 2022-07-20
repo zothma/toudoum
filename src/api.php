@@ -215,6 +215,7 @@
             $resultat["nom"] = $donnee["title"];
             $resultat["annee_sortie"] = substr($donnee["release_date"], 0, 4);
             $resultat["collection"] = $films_collection;
+            $resultat["popularite"] =$donnee["vote_average"];
         }
         catch (TypeError $err) {
             # Erreur 404, film non trouvé
@@ -245,6 +246,7 @@
             $resultat["nb_saisons"] = $donnee["number_of_seasons"];
             $resultat["nb_episodes"] = $donnee["number_of_episodes"];
             $resultat["createur"] = array_map(fn ($el) => $el["name"], $donnee["created_by"]);
+            $resultat["popularite"] = $donnee["vote_average"];
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
             $resultat = [];
@@ -307,5 +309,21 @@
         }
 
         return $resultat;
+    }
+
+    function popularite($id) : float
+    {
+        $popularite = null;
+        if ($id[0] === 'f')
+        {
+            $id = substr($id, 1);
+            $popularite = detail_film($id)["popularite"];
+        }
+        else
+        {
+            $id = substr($id, 1);
+            $popularite = detail_serie($id)["popularite"];
+        }
+        return $popularite*10;
     }
 ?>

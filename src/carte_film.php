@@ -17,7 +17,15 @@ function generer_carte(string $id, array $film, float $pourcentage)
     
                     <div class="carte_film--likes">
                         <img src="./pictures/green_like.svg" alt="green like">
-                        <p> <?php echo $pourcentage ?>% aiment</p>
+                        <?php if ($pourcentage !== null)
+                        {
+                            echo '<p> ' . $pourcentage . ' % aiment</p>';
+                        }
+                        else
+                        {
+                            echo '<p>Donnée inconnue</p>';
+                        }
+                        ?>
                         <img src="./pictures/red_dislike.svg" alt="red dislike">
                     </div>
                 </div>
