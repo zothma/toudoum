@@ -20,6 +20,6 @@
         </div>
     </div>
     <div class="footer--retour">
-        <img src="./pictures/arrow-up-s-line.svg" alt="flèche">
+        <a href="#"><img src="./pictures/arrow-up-s-line.svg" alt="flèche"></a>
     </div>
 </footer>
