@@ -37,14 +37,14 @@ $donnee = recuperer_liste_a_voir($_SESSION["userid"]);
                 $id = substr($id,1);
                 $id = intval($id);
                 $film = detail_film($id);
-                generer_carte($id, $film, 80);
+                generer_carte($id, $film, popularite($_GET["id"]));
             }
             else
             {
                 $id = substr($id,1);
                 $id = intval($id);
                 $film = detail_serie($id);
-                generer_carte($id, $film, 80);
+                generer_carte($id, $film, popularite($_GET["id"]));
             }
         }
             ?>     

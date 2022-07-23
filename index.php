@@ -40,15 +40,15 @@ $donnee_popu_series = populaires_series();
     <main  class="main__recherche">
         <h2>Films en vogue</h2>
         <div class = "recommendations">   
-            <?php foreach($donnee_nv_movies as $id => $film) {generer_carte($id, $film, 80);}  ?>
+            <?php foreach($donnee_nv_movies as $id => $film) {generer_carte($id, $film);}  ?>
         </div>
         <h2>Séries en vogue</h2>
         <div class="recommendations">
-            <?php foreach($donnee_nv_series as $id => $film) {generer_carte($id, $film, 80);} ?>
+            <?php foreach($donnee_nv_series as $id => $film) {generer_carte($id, $film);} ?>
         </div>
         <h2>Films les plus populaires</h2>
         <div class="recommendations">
-            <?php foreach($donnee_popu_movies as $id => $film) {generer_carte($id, $film, 80);} ?>
+            <?php foreach($donnee_popu_movies as $id => $film) {generer_carte($id, $film);} ?>
         </div>
     </main>
     <?php include('src/footer.php') ?>
