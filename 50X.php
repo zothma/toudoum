@@ -9,7 +9,10 @@
     <title>Erreur 50X</title>
 </head>
 <body>
-    <div class="erreur__center">
+    <div class="nav-bar__noir2">
+        <?php include('src/header.php'); ?>
+    </div>
+    <div class="erreur__center" style="padding-bottom: 280px;">
         <h2>500 - Une erreur serveur est survenue</h2>
         <p>Merci de réessayer plus tard</p>
         <img src="pictures/er50X.png" alt="Erreur Serveur">
