@@ -89,9 +89,13 @@ if (isset($_GET["commentaire"]))
     ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
 }
 
-if (isset($_GET["regarder"]) && !$liste_regarder)
-{
-    ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
+if (isset($_SESSION["userid"])) {
+
+    if (isset($_GET["regarder"]) && !$liste_regarder)
+    {
+        ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
+        header("location: details.php?id=" . $_GET["id"]);
+    }
 }
 ?>
 
