@@ -52,7 +52,7 @@ $aucun_resultat = count($donnee) === 0;
         </main>
     <?php else: ?>
         <main class="main__recherche">
-            <?php foreach ($donnee as $id => $film) {generer_carte($id, $film, popularite($id));} ?>
+            <?php foreach ($donnee as $id => $film) {generer_carte($id, $film);} ?>
             
         </main>
     <?php endif; ?>

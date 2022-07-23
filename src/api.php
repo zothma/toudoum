@@ -89,6 +89,7 @@
         $poster = IMAGE_URL . $donnee["poster_path"];           // Récupère l'URL complète du poster
         $fond = FULL_HD_IMAGE_URL . $donnee["backdrop_path"];   // Récupère l'URL complète du fond
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
+        $popularite = round(floatval($donnee["vote_average"]) * 10);
 
         if ($est_film ?? (isset($donnee["media_type"]) && $donnee["media_type"] === "movie")) {
             $donnee_formate = [
@@ -96,7 +97,8 @@
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
                 "poster" => $poster,
                 "fond" => $fond,
-                "genre" => $genre
+                "genre" => $genre,
+                "popularite" => $popularite
             ];
         } else {
             $donnee_formate = [
@@ -104,7 +106,8 @@
                 "annee_sortie" => substr($donnee["first_air_date"], 0, 4),
                 "poster" => $poster,
                 "fond" => $fond,
-                "genre" => $genre
+                "genre" => $genre,
+                "popularite" => $popularite
             ];
         }
 
@@ -193,6 +196,7 @@
             "production" => $production,
             "plateformes" => $plateformes,
             "recommendations" => $recommendations,
+            "popularite" => round(floatval($donnee["vote_average"]) * 10)
         ];
     }
 
@@ -215,7 +219,6 @@
             $resultat["nom"] = $donnee["title"];
             $resultat["annee_sortie"] = substr($donnee["release_date"], 0, 4);
             $resultat["collection"] = $films_collection;
-            $resultat["popularite"] =$donnee["vote_average"];
         }
         catch (TypeError $err) {
             # Erreur 404, film non trouvé
@@ -246,7 +249,6 @@
             $resultat["nb_saisons"] = $donnee["number_of_seasons"];
             $resultat["nb_episodes"] = $donnee["number_of_episodes"];
             $resultat["createur"] = array_map(fn ($el) => $el["name"], $donnee["created_by"]);
-            $resultat["popularite"] = $donnee["vote_average"];
         } catch (TypeError $err) {
             # Erreur 404, série non trouvée
             $resultat = [];
@@ -311,19 +313,5 @@
         return $resultat;
     }
 
-    function popularite($id) : float
-    {
-        $popularite = null;
-        if ($id[0] === 'f')
-        {
-            $id = substr($id, 1);
-            $popularite = detail_film($id)["popularite"];
-        }
-        else
-        {
-            $id = substr($id, 1);
-            $popularite = detail_serie($id)["popularite"];
-        }
-        return $popularite*10;
-    }
+    // print_r(detail_film(453395));
 ?>

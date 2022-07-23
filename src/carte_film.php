@@ -1,5 +1,5 @@
 <?php
-function generer_carte(string $id, array $film, float $pourcentage)
+function generer_carte(string $id, array $film)
 {
 ?>
     <a href="details.php?id=<?php echo $id ?>" class="carte_film">
@@ -12,20 +12,12 @@ function generer_carte(string $id, array $film, float $pourcentage)
                 <div class="carte_film--stats">
                     <div class="carte_film--bar-container">
                         <div class="carte_film--bar carte_film--bar__rouge"></div>
-                        <div class="carte_film--bar carte_film--bar__vert" style="width:<?php echo $pourcentage ?>%"></div>
+                        <div class="carte_film--bar carte_film--bar__vert" style="width:<?php echo $film["popularite"] ?>%"></div>
                     </div>
     
                     <div class="carte_film--likes">
                         <img src="./pictures/green_like.svg" alt="green like">
-                        <?php if ($pourcentage !== null)
-                        {
-                            echo '<p> ' . $pourcentage . ' % aiment</p>';
-                        }
-                        else
-                        {
-                            echo '<p>Donnée inconnue</p>';
-                        }
-                        ?>
+                        <p><?php echo $film["popularite"] ?>% aiment</p>
                         <img src="./pictures/red_dislike.svg" alt="red dislike">
                     </div>
                 </div>
