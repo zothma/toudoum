@@ -63,7 +63,6 @@
         # Vérifie si l'objet passé en paramètre est un film ou une série conforme
         $backdrop_valide = isset($objet['backdrop_path']);
         $poster_valide = isset($objet['poster_path']);
-        $origine_valide = isset($objet['production_countries']) && $objet['production_countries'] !== [];
 
         $type_valide = true;
         if (array_key_exists('media_type', $objet)) {
@@ -73,7 +72,7 @@
         $date = recuperer_date($objet);
         $date_valide = $date <= time() && $date != 0;
 
-        return $backdrop_valide && $poster_valide && $type_valide && $date_valide && $origine_valide;
+        return $backdrop_valide && $poster_valide && $type_valide && $date_valide;
     }
 
     function formater_donnee(array $donnee, bool $est_film = null) {
