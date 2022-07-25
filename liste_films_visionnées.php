@@ -31,23 +31,18 @@ $donnee = recuperer_liste_vu($_SESSION["userid"]);
         <h2>Films & séries visionnées</h2>
     </header>
     <main class="main__recherche">
-        <?php foreach ($donnee as $id) {
-            if($id[0] == 'f')
-            {
-                $id = substr($id,1);
-                $id = intval($id);
-                $film = detail_film($id);
-                generer_carte($id, $film, popularite($_GET["id"]));
+    <?php foreach ($donnee as $id) {
+            $nv_id = intval(substr($id,1));
+            if($id[0] == 'f') {
+                $film = detail_film($nv_id);
+                generer_carte($id, $film);
             }
-            else
-            {
-                $id = substr($id,1);
-                $id = intval($id);
-                $film = detail_serie($id);
-                generer_carte($id, $film, popularite($_GET["id"]));
+            else {
+                $serie = detail_serie($nv_id);
+                generer_carte($id, $serie);
             }
         }
-            ?>     
+            ?>  
     </main>
     <?php include('src/footer.php') ?>
 </body>
