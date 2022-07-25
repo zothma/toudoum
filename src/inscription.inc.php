@@ -15,7 +15,7 @@ if (isset($_POST["submit"])) {
         exit();
     }
 
-    if (user_exists($email, $pwd)) {
+    if (user_saved($email)) {
         header("location: ../inscription.php?error=usernametaken");
         exit();
     }
