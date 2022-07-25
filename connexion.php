@@ -20,9 +20,14 @@
 
             <?php if (isset($_GET["error"]))
             {
-                if ($_GET["error"] == "wronglogin")
+
+                if ($_GET["error"] == "unknowlogin")
                 {
-                    echo "<p>L'email ou le mot de passe est erroné</p>";
+                    echo "<p>L'email inscrit n'est pas reconnu</p>";
+                }
+                else if ($_GET["error"] == "wronglogin")
+                {
+                    echo "<p>Le mot de passe est erroné</p>";
                 }
             }
             ?>

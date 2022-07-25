@@ -6,8 +6,12 @@ function loginUser($email, $pwd)
 {
     $pwd_crypt = password_hash($pwd, PASSWORD_DEFAULT);
     $correct = user_exists($email, $pwd);
-
-    if (!$correct)
+    $user_in_table = user_in_table($email);
+    if(!$user_in_table)
+    {
+        header("location: ../connexion.php?error=unknowlogin");
+    }
+    else if (!$correct)
     {
         header("location: ../connexion.php?error=wronglogin");
     } else {
