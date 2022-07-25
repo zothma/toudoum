@@ -61,25 +61,19 @@
 
     function film_serie_valide(array $objet): bool {
         # Vérifie si l'objet passé en paramètre est un film ou une série conforme
-        $backdrop_valide = array_key_exists('backdrop_path', $objet);
-        if ($backdrop_valide) {
-            $backdrop_valide = !is_null($objet['backdrop_path']);
-        }
+        $backdrop_valide = isset($objet['backdrop_path']);
+        $poster_valide = isset($objet['poster_path']);
+        $origine_valide = isset($objet['production_countries']) && $objet['production_countries'] !== [];
 
-        $poster_valide = array_key_exists('poster_path', $objet);
-        if ($poster_valide) {
-            $poster_valide = !is_null($objet['poster_path']);
-        }
-
-        $type_correct = true;
+        $type_valide = true;
         if (array_key_exists('media_type', $objet)) {
-            $type_correct = $objet["media_type"] === "movie" || $objet["media_type"] === "tv";
+            $type_valide = $objet["media_type"] === "movie" || $objet["media_type"] === "tv";
         }
 
         $date = recuperer_date($objet);
-        $date_correcte = $date <= time() && $date != 0;
+        $date_valide = $date <= time() && $date != 0;
 
-        return $backdrop_valide && $poster_valide && $type_correct && $date_correcte;
+        return $backdrop_valide && $poster_valide && $type_valide && $date_valide && $origine_valide;
     }
 
     function formater_donnee(array $donnee, bool $est_film = null) {
@@ -313,6 +307,4 @@
 
         return $resultat;
     }
-
-    // print_r(detail_film(453395));
 ?>
