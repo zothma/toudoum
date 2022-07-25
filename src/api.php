@@ -191,6 +191,7 @@
             "resume" => $donnee["overview"],
             "origine" => $donnee["production_countries"][0]["iso_3166_1"],
             "fond" => FULL_HD_IMAGE_URL . $donnee["backdrop_path"],
+            "poster" => IMAGE_URL . $donnee["poster_path"],
             "acteurs" => $acteurs,
             "genres" => $genres,
             "production" => $production,

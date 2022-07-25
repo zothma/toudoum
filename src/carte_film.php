@@ -7,7 +7,7 @@ function generer_carte(string $id, array $film)
             <img src="<?php echo $film["poster"] ?>" alt="Affiche">
             <h3><?php echo $film["nom"] ?></h3>
             <div class="carte_film--bloc">
-                <p><?php echo $film["annee_sortie"] . " - " . $film["genre"] ?></p>
+                <p><?php echo $film["annee_sortie"] . " - " . ($film["genre"] ?? $film["genres"][0]) ?></p>
                 
                 <div class="carte_film--stats">
                     <div class="carte_film--bar-container">
