@@ -89,9 +89,13 @@ if (isset($_GET["commentaire"]))
     ajouter_commentaire($_GET["id"], $_SESSION["userid"], $_GET["commentaire"]);
 }
 
-if (isset($_GET["regarder"]) && !$liste_regarder)
-{
-    ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
+if (isset($_SESSION["userid"])) {
+
+    if (isset($_GET["regarder"]) && !$liste_regarder)
+    {
+        ajouter_film_liste_a_voir($_GET["id"], $_SESSION["userid"]);
+        header("location: details.php?id=" . $_GET["id"]);
+    }
 }
 ?>
 
@@ -114,7 +118,7 @@ if (isset($_GET["regarder"]) && !$liste_regarder)
                 <h2 class="en-tete-image--titre"><?php echo $donnee["nom"] ?></h2>
                 <div class="en-tete-image--infos">
                     <div>
-                        <div>Recommandé à 80%</div>
+                        <div>Recommandé à <?php echo $donnee["popularite"]?>%</div>
                         <div><?php echo $donnee["annee_sortie"] . ' - ' . $donnee["origine"] ?></div>
                         <div><?php echo implode(', ', $donnee["genres"]) ?></div>
                     </div>
@@ -191,7 +195,7 @@ if (isset($_GET["regarder"]) && !$liste_regarder)
         <?php if (count($donnee["recommendations"]) !== 0): ?>
             <h2>Dans le même genre</h2>
             <div class="recommendations">
-                <?php array_walk($donnee["recommendations"], fn ($el, $id) => generer_carte($id, $el, 80)) ?>
+                <?php array_walk($donnee["recommendations"], fn ($el, $id) => generer_carte($id, $el)) ?>
             </div>
         <?php endif ?>
 

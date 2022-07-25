@@ -89,6 +89,7 @@
         $poster = IMAGE_URL . $donnee["poster_path"];           // Récupère l'URL complète du poster
         $fond = FULL_HD_IMAGE_URL . $donnee["backdrop_path"];   // Récupère l'URL complète du fond
         $genre = rechercher_genre($donnee["genre_ids"][0]);     // Récupère le nom du premier genre de la liste
+        $popularite = round(floatval($donnee["vote_average"]) * 10);
 
         if ($est_film ?? (isset($donnee["media_type"]) && $donnee["media_type"] === "movie")) {
             $donnee_formate = [
@@ -96,7 +97,8 @@
                 "annee_sortie" => substr($donnee["release_date"], 0, 4),
                 "poster" => $poster,
                 "fond" => $fond,
-                "genre" => $genre
+                "genre" => $genre,
+                "popularite" => $popularite
             ];
         } else {
             $donnee_formate = [
@@ -104,7 +106,8 @@
                 "annee_sortie" => substr($donnee["first_air_date"], 0, 4),
                 "poster" => $poster,
                 "fond" => $fond,
-                "genre" => $genre
+                "genre" => $genre,
+                "popularite" => $popularite
             ];
         }
 
@@ -193,6 +196,7 @@
             "production" => $production,
             "plateformes" => $plateformes,
             "recommendations" => $recommendations,
+            "popularite" => round(floatval($donnee["vote_average"]) * 10)
         ];
     }
 
@@ -308,4 +312,6 @@
 
         return $resultat;
     }
+
+    // print_r(detail_film(453395));
 ?>

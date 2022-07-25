@@ -305,6 +305,48 @@
         return !is_null($ligne) && password_verify($pass, $ligne[0]);
     }
 
+    function user_saved($email): bool {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT email FROM Utilisateur WHERE email = ?");
+        mysqli_stmt_bind_param($sql, 's', $email);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+
+        $return = true;
+        if (is_null($ligne))
+        {
+            $return = false;
+        }
+        return $return;
+    }
+
+    function user_in_table($email): bool {
+        global $link;
+        $sql = mysqli_prepare($link, "SELECT email FROM Utilisateur WHERE email = ?");
+        mysqli_stmt_bind_param($sql, 's', $email);
+
+        if (!(mysqli_stmt_execute($sql))) {
+            echo "ERREUR : " . mysqli_error($link);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($sql);
+        $ligne = mysqli_fetch_row($result);
+
+        $return = true;
+        if(is_null($ligne))
+        {
+            $return = false;
+        }
+        return $return;
+    }
+
     function recup_info_user($email) {
         global $link;
         $sql = mysqli_prepare($link, "SELECT id_util, photo_pp FROM Utilisateur WHERE email = ?;");

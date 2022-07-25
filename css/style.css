@@ -414,11 +414,14 @@ h2 {
     flex-direction: column;
     font-family: 'Inter', sans-serif;
     font-weight: bolder;
+    padding-bottom: 43px;
 }
 .erreur__center img{
     width: 400px;
+    margin-top: 50px;
 }
 
+.erreur__center 
 .carte-saison--resume__indisponible {
     color: #8C8C8C;
     font-style: italic;
